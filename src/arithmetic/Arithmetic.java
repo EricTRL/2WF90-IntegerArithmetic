@@ -5,6 +5,11 @@
  */
 package arithmetic;
 
+import java.io.InputStream;
+import java.io.PrintStream;
+
+import io.*;
+
 /**
  * This is the base class that is run.
  * It reads input with InputReader, applies any of the arithmetic functions
@@ -19,5 +24,17 @@ package arithmetic;
  * @since 6 SEPTEMBER 2018
  */
 public class Arithmetic {
+    
+    private final InputReader reader;
+    
+    public Arithmetic (InputStream in) {
+        reader = new InputReader(in);
+    }
+    
+    
+    
+    public static void main(String args[]) {
+        
+    }
     
 }
