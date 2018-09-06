@@ -6,6 +6,10 @@
 package arithmetic;
 
 /**
+ * This is the base class that is run.
+ * It reads input with InputReader, applies any of the arithmetic functions
+ * and return the output via OutputWriter
+ * 
  * @author E.M.A. Arts (1004076)
  * @author K. Degeling (1018025)
  * @author R.M. Jonker (1011291)
