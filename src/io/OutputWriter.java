@@ -1,5 +1,6 @@
 package io;
 
+import arithmetic.Computation;
 import java.io.PrintStream;
 
 /**
@@ -18,11 +19,10 @@ public class OutputWriter {
      * Method which will print the output to systemOut
      *
      * @param systemOut PrintStream of where to print (E.g. System.out)
-     * @param p pack which contains the rectangle input
-     * @param prefix String to print before the actual calculated outputs
-     *              E.g. a String from an InputReader's getInputMessage()-method.
+     * @param c Computation to print
      */
-    public static void printOutput(PrintStream systemOut, Pack p, String prefix) {
+    public static void printOutput(PrintStream systemOut, Computation c) {
+        /*
         systemOut.print(prefix);
         systemOut.println("placement of rectangles");
         for (RectangleRotatable r : p.getOrderedRectangles()) {
@@ -35,5 +35,6 @@ public class OutputWriter {
             }
             systemOut.println(r.x + " " + r.y);
         }
+        */
     }
 }

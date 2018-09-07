@@ -1,12 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arithmetic;
-
-import java.io.InputStream;
-import java.io.PrintStream;
 
 import io.*;
 
@@ -23,17 +15,14 @@ import io.*;
  * 
  * @since 6 SEPTEMBER 2018
  */
-public class Arithmetic {
-    
-    private final InputReader reader;
-    
-    public Arithmetic (InputStream in) {
-        reader = new InputReader(in);
-    }
-    
-    
+public class Arithmetic {   
     
     public static void main(String args[]) {
+        InputReader reader = new InputReader(System.in);
+        System.out.println(reader.getNextComputation());
+        System.out.println(reader.getNextComputation());
+        System.out.println(reader.getNextComputation());
+        System.out.println(reader.getNextComputation());
         
     }
     

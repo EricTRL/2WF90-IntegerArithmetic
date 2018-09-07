@@ -1,14 +1,22 @@
 
 package io;
 
+import arithmetic.Computation;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Collection;
 import java.util.Scanner;
 
 /**
  * Reads (and parses) the inputs from a given input stream (E.g. System.in)
- * Each instance can only be used once (like Iterators) to read the input
- * stream's inputs
  * 
  * @author E.M.A. Arts (1004076)
  * @author K. Degeling (1018025)
@@ -16,225 +24,73 @@ import java.util.Scanner;
  * @author S. Jacobs (1005276)
  * @author M. Schotsman (0995661)
  * 
- * @since 6 SEPTEMBER 2018
+ * @since 6 SEPT 2018
  */
 public class InputReader {
-    //Scannner for the input file
-    private final Scanner sc;
     
-    //Scanner to keep track of which non-input string is expected
-    private final Scanner expectedSc;
-    //Expected sequence of non-input strings that the input file is required to have
-    private final static String EXPECTED_INPUT = "container height: rotations allowed: number of rectangles:";
+    //input and output directories
+    protected static final File INPUT = new File("res/input.txt");
+    //protected static final File OUTPUT = new File("res/output.txt");
     
-    //stores the input as raw text
-    private final StringBuilder inputMsg;
-    
-    //used to throw exceptions and to check whether this reader is closed.
-    private boolean closed;
-    private boolean packDataRead;
-    private boolean rectanglesRead;
-    private int numberOfRectangles;
+    private final Scanner lineScanner;
     
     //constructor
-    public InputReader(InputStream systemIn) {
-        this.sc = new Scanner(systemIn);
-        this.expectedSc = new Scanner(EXPECTED_INPUT);
-        this.inputMsg = new StringBuilder();
-        this.closed = false;
-        this.packDataRead = false;
-        this.rectanglesRead = false;
-    }
-    
-    /** basic getter */
-    public boolean isClosed() {
-        return closed;
-    }
-    
-    /** @throws IllegalStateException if this.closed*/
-    private void checkNotClosed() throws IllegalStateException {
-        if (closed) {
-            throw new IllegalStateException("InputReader is closed; no inputs can be read");
-        }
+    //to read from a file pass the following: new FileInputStream(FILE)
+    public InputReader(InputStream streamIn) {
+        this.lineScanner = new Scanner(streamIn);
     }
     
     /**
-     * Method which returns the input.
-     * @return string containing the input
+     * Reads the data from the input File
+     *
+     * @return the data as a 'Computation'
      */
-    public String getInputMessage() {
-        return inputMsg.toString();
+    public Computation getNextComputation() {        
+        String type = "[INVALID]";
+        int radix = -1;
+        String x = "0";
+        String y = "0";
+        String m = "-1";
+        
+        //keep reading lines until we encounter an empty one
+        String line;
+        while(lineScanner.hasNextLine() && !(line = lineScanner.nextLine()).isEmpty()) {
+            if (line.charAt(0) == '#') {
+                continue;
+            }
+            Scanner sc = new Scanner(line);
+            if (!sc.hasNext()) {
+                System.err.println("An empty line was read -> This should never happen;");
+                break;
+            }
+            String next = sc.next();
+            switch (next) {
+                case "[radix]": radix = sc.nextInt(); break;
+                case "[add]": 
+                case "[subtract]": 
+                case "[multiply]":
+                case "[karatsuba]":
+                case "[reduce]":
+                case "[inverse]":
+                case "[euclid]":
+                    type = next;
+                    break;
+                case "[x]": x = sc.next(); break;
+                case "[y]": y = sc.next(); break;
+                case "[m]": m = sc.next(); break;
+                default: System.err.println("Unexpected input read: " + next); break;
+            }
+        }
+        //empty line was read (or EoF was reached) -> computation data read
+        
+        if (type.equals("[INVALID]")) {
+            return null;
+        }
+        
+        //create the Computation
+        return new Computation(x, y, radix, type, m);
     }
-    
-    /**
-     * Checks to see if the expected String matches the provided string, and
-     * throws an IOException if not the case.
-     * @param realStr The provided string
-     * @param expStr The expected string
-     * 
-     * @pre realStr != null && expStr != null
-     * @throws IOException if expStr != realStr
-     */
-    protected void checkValidInputText(String realStr, String expStr) throws IOException {
-        if (!realStr.equals(expStr)) {
-            throw new IOException(
-                    "Expected <" + expStr + "> but got <" + realStr + "> while parsing System.in");
-        }
-    }
-    
-    /**
-     * A method that reads and returns a scanner's next string, but also stores
-     * the scanned string in a StringBuilder
-     * @param sc The scanner that reads over InputStream passed in this
-     * instance's constructor
-     * 
-     * @pre sc != null && sc.hasNext()
-     * @modifies this.inputMsg
-     * @post this.inputMsg = \old(this.inputMsg) + sc.next() + " "
-     * 
-     * @return the next integer from the given scanner
-     */
-    protected String scanNextString(Scanner sc) {
-        String scanned = sc.next();
-        inputMsg.append(scanned);
-        inputMsg.append(" ");
-        return scanned;
-    }
-    
-    /**
-     * A method that reads and returns a scanner's next integer, but also stores
-     * the scanned integer in a StringBuilder
-     * @param sc The scanner that reads over InputStream passed in this
-     * instance's constructor
-     * 
-     * @pre sc != null && sc.hasNextInt()
-     * @modifies this.inputMsg
-     * @post this.inputMsg = \old(this.inputMsg) + sc.nextInt() + " "
-     * 
-     * @throws IOException if there is no next integer to scan.
-     * @return the next integer from the given scanner
-     */
-    protected int scanNextInteger(Scanner sc) throws IOException {
-        if (!sc.hasNextInt()) {
-            throw new IOException("Integer value expected while scanning inputs. Got <" + sc.next() + "> instead");
-        }
-        
-        int scanned = sc.nextInt();
-        inputMsg.append(scanned);
-        inputMsg.append(" ");
-        return scanned;
-    }  
-    
-    /**
-     * Reads the PackData from this.systemIn, and returns this PackData
-     * Can only be called once.
-     * 
-     * @pre this.systemIn has the expected format && !this.packDataRead
-     *      && !this.closed
-     * @modifies this
-     * @post this.packDataRead
-     * 
-     * @return  a PackData instance containing fixed height, rotations allowed,
-     *          and number of rectangles
-     * 
-     * @throws IOException if this.systemIn does NOT have the expected format
-     * @throws IllegalStateException if this.packDataRead || this.closed
-     */
-    public PackData readPackData() throws IOException, IllegalStateException {
-        checkNotClosed();
-        if (packDataRead) {
-            throw new IllegalStateException("packData has already been read by this InputReader");
-        }
-        
-        //data we want to store
-        final int containerHeight;
-        final boolean canRotate;
-      
-        //skip "container height" text
-        checkValidInputText(scanNextString(sc), expectedSc.next());
-        checkValidInputText(scanNextString(sc), expectedSc.next());
-        
-        //Read free/fixed height input
-        if (scanNextString(sc).equals("fixed")) {
-            containerHeight = scanNextInteger(sc);
-        } else {
-            containerHeight = -1;
-        }
-        
-        inputMsg.append("\n");
-        
-        //skip "rotations allowed" text
-        checkValidInputText(scanNextString(sc), expectedSc.next());
-        checkValidInputText(scanNextString(sc), expectedSc.next());
-        canRotate = scanNextString(sc).equals("yes");
+}    
 
-        inputMsg.append("\n");
-        
-        //skip "number of rectangles" text
-        checkValidInputText(scanNextString(sc), expectedSc.next());
-        checkValidInputText(scanNextString(sc), expectedSc.next());
-        checkValidInputText(scanNextString(sc), expectedSc.next());
-        
-        //Read number of rectangles-input
-        numberOfRectangles = scanNextInteger(sc);
-        
-        inputMsg.append("\n");
-        
-        packDataRead = true;
-        
-        //create the packData
-        return new PackData(containerHeight, canRotate, numberOfRectangles);
-    }
     
-    /**
-     * Reads the rectangles from this.systemIn, and stores those in a given pack
-     * Must be called after readPackData() and can only be called once.
-     * 
-     * @pre this.systemIn has the expected format && this.packDataRead && !this.closed && !this.rectanglesRead
-     * @modifies pack, this
-     * @post    Scanner sc and Scanner expectedSc are closed && this.closed &&
-     *          this.rectanglesRead
-     * 
-     * @throws IOException if this.systemIn does NOT have the expected format
-     * @throws IllegalStateException if this.rectanglesRead ||
-     *                                  !this.packDataRead || this.closed
-     */
-    public <P extends Pack> void readRectangles(P pack) throws IOException, IllegalStateException {
-        checkNotClosed();
-        if (rectanglesRead){
-            throw new IllegalStateException("Rectangles have already been read by this InputReader");
-        }
-        if (!packDataRead) {
-            throw new IllegalStateException("packData has not yet been read by this InputReader!");
-        }
-        
-        //Read each rectangle
-        for (int i = 0; i < numberOfRectangles; i++){
-            final int width = scanNextInteger(sc);
-            final int height = scanNextInteger(sc);
-            RectangleRotatable rec = new RectangleRotatable(i, width, height);
-            //add each rectangle to the pack
-            pack.addRectangle(rec);
-            
-            inputMsg.append("\n");
-        }
-        
-        rectanglesRead = true;
-        
-        closeReader();
-    }
-    
-    /**
-     * Closes this InputReader and prevents it from being used again.
-     * Also closes the Scanners associated with this reader.
-     * 
-     * @modifies this
-     * @post this.closed && Scanner sc is closed && Scanner expectedSc is closed
-     */
-    public void closeReader() {
-        //we can only use Scanners once (like Iterators), so close them
-        //sc.close(); //NOTE: closing scanners closes the underlying inputsteam (System.in), which we dont want!
-        expectedSc.close();
-        closed = true;
-    }
-}
+  
