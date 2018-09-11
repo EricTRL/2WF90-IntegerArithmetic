@@ -16,9 +16,9 @@ package arithmetic;
  */
 public class Multiplication {
     public static void main(String[] args) {
-        int[] a = {-3, -2, -5, -0, -5, -8};
-        int[] b = {6, 3, 2, 5, 7, 7};
-        for (int x : multiply(a, b, 10)) {
+        int[] a = {1,1,1,0,0,0,1};
+        int[] b = {1,0,0,1,1,0,1};
+        for (int x : multiply(a, b, 2)) {
             System.out.print(x+" ");
         }
     }
@@ -40,46 +40,21 @@ public class Multiplication {
         int[] answerToAdd = new int[x.length*2];
         for (int i = y.length; i > 0; i--) {
             for (int j = x.length; j > 0; j--) {
-                //System.out.println((x.length*2)-(x.length-j)-zerosAdded-1+arrayExtendedByAmount);
                 answerToAdd[(x.length*2)-(x.length-j)-zerosAdded-1+arrayExtendedByAmount] = (x[j-1]*y[i-1] + carry)%b; //compute new value
                 //compute carry
-                //System.out.println("x[j-1]: " + x[j-1] + ", y[i-1]: " + y[i-1] + ", carry: " + carry + ", answerToAdd: " + (x[j-1]*y[i-1] + carry)%b);
                 if (Math.abs(x[j-1]*y[i-1]+carry)>=b) {
                     carry = (x[j-1]*y[i-1]+carry)/b;
                 } else {
                     carry = 0;
                 }
                 carryPlacementCount = (x.length*2)-(x.length-j)-zerosAdded-2+arrayExtendedByAmount; //Keep track of where to place carry (only needed after j for-loop)
-                //System.out.println("carry: " + carry + ", carryPlacementCount: " + carryPlacementCount);
             }
             
-            /*
-            for (int digit : answerToAdd) {
-                System.out.print(digit);
-                System.out.println("carry: " + carry + ", carryPlacementCount: " + carryPlacementCount);
-            }
-            */
-            
-            //System.out.println(zerosAdded);
-            //System.out.println("carry: " + carry + ", carryPlacementCount: " + carryPlacementCount);
-            //System.out.println();
             answerToAdd[carryPlacementCount] = carry; //Place carry
             carry = 0; //reset carry
-            //Add zeros where needed
-            /*
-            for(int z = 0; z < zerosAdded; z++){
-                answerToAdd[x.length*2-1-z] = 0;
-            }
-            */
             zerosAdded++; //Increase zerosAdded counter for next iteration
             
-            /*
-            for (int digit : answerToAdd) {
-                System.out.print(digit);
-            }
-            */
-            
-            // Wrong implementation of copying of the array. Probably not needed.
+            // Increase size of answerToAdd if Addition.add increased the size of the answer array
             if (answer.length>answerToAdd.length) {
                 int[] backupAnswerToAdd = new int[answerToAdd.length];
                 for (int a = 0; a < answerToAdd.length; a++) {
@@ -87,19 +62,12 @@ public class Multiplication {
                 }
                 answerToAdd = new int[answer.length];
                 for (int a = 0; a < backupAnswerToAdd.length; a++) {
-                    //System.out.println("a:" + a);
                     answerToAdd[a+1] = backupAnswerToAdd[a];
                 }
                 arrayExtendedByAmount++; //increase array extension counter
             }
             
-            /*
-            for (int digit : answerToAdd) {
-                System.out.print(digit);
-            }
-            */
-            
-            answer = Addition.add(answer, answerToAdd, b);
+            answer = Addition.add(answer, answerToAdd, b); //add current result to total result
             answerToAdd = new int[answerToAdd.length]; //reset answerToAdd array
         }
         return answer;
