@@ -6,9 +6,7 @@
 package arithmetic;
 
 /**
- * Class that is expected by Momotor.
- * Solves a given PackingProblem from an Inputstream.
- * Can be forced to use a specific algorithm to solve the PackignProblem.
+ * Class that adds two large (integer) numbers x,y with radix b.
  */
 
 /**
@@ -22,10 +20,10 @@ package arithmetic;
  */
 public class Addition {
     public static void main(String[] args) {
-        int[] a = {3};
-        int[] b = {8};
-        for (int x : addition(a, b, 10)) {
-            System.out.print(x);
+        int[] a = {-2, -5, 0};
+        int[] b = {2, 5, 0};
+        for (int x : add(a, b, 10)) {
+            System.out.print(x+" ");
         }
     }
     /**
@@ -37,22 +35,19 @@ public class Addition {
      * @pre x.length==y.length
      * @return x + y in radix b
      */
-    public static int[] addition (int[] x, int[] y, int b) {
+    public static int[] add (int[] x, int[] y, int b) {
         int carry = 0; //optional carry we need to add.
-        int[] answer= new int[x.length+1];
+        int[] answer = new int[x.length+1];
         for (int i = answer.length-1; i > 0; i--) {
             answer[i] = (x[i-1] + y[i-1] + carry)%b; //compute new value
-
             //compute carry
-            if (x[i-1]+y[i-1]+carry>=b) {
+            if (Math.abs(x[i-1]+y[i-1]+carry)>=b) {
                 carry = (x[i-1]+y[i-1]+carry)/b;
             } else {
                 carry = 0;
             }
         }
-        if (carry>0) { //Deal with potential 'overflow'
-            answer[0] = carry;
-        }
+        answer[0] = carry;
         return answer;
     }
     
