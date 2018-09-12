@@ -20,9 +20,9 @@ public class Arithmetic {
     public static void main(String args[]) {
         InputReader reader = new InputReader(System.in);
         System.out.println(reader.getNextComputation());
-        System.out.println(reader.getNextComputation());
-        System.out.println(reader.getNextComputation());
-        System.out.println(reader.getNextComputation());
+        //System.out.println(reader.getNextComputation());
+        //System.out.println(reader.getNextComputation());
+        //System.out.println(reader.getNextComputation());
         
     }
     
