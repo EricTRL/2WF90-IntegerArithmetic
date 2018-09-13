@@ -4,7 +4,8 @@ package arithmetic;
 import static arithmetic.Addition.add;
 import static arithmetic.Multiplication.multiply;
 import static arithmetic.Subtraction.subtract;
-import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * @author E.M.A. Arts (1004076)
@@ -17,11 +18,14 @@ import java.util.Arrays;
  */
 public class Karatsuba {    
     public static void main(String[] args) {
-        int[] a = {9, 0, 1, 8};
-        int[] b = a;
-        for (int x : karatsuba(a, b, 10)) {
-            System.out.print(x);
-        }
+        LinkedList<Integer> a = new LinkedList<>();
+        a.addLast(9);
+        a.addLast(0);
+        a.addLast(1);
+        a.addLast(8);
+        
+        LinkedList<Integer> b = new LinkedList<>(a);
+        System.out.println(karatsuba(a,b,10));
     }
     
     /**
@@ -33,71 +37,48 @@ public class Karatsuba {
      * @pre x.length==y.length
      * @return 
      */
-    public static int[] karatsuba (int[] x, int[] y, int b) {
-        if (x.length % 2 != 0){
-            //add leading 0
-            int[] newX = new int[x.length + 1];
-            int[] newY = new int[y.length + 1];
-            
-            newX[0] = 0;
-            newY[0] = 0;
-            for(int i=1; i < newX.length; i++) {
-                newX[i] = x[i-1];
-                newY[i] = y[i-1];
+    public static LinkedList<Integer> karatsuba (LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+        int size = x.size();
+        
+        if (x.size() % 2 != 0) {
+            x.addFirst(0);
+            y.addFirst(0);
+            size++;
+        }//x.size() = even
+        LinkedList<Integer> xLo = new LinkedList<>();
+        LinkedList<Integer> yLo = new LinkedList<>();
+        LinkedList<Integer> xHi = new LinkedList<>();
+        LinkedList<Integer> yHi = new LinkedList<>();
+        
+        Iterator<Integer> xIterator = x.iterator();
+        Iterator<Integer> yIterator = y.iterator();
+        for (int i = 0; i < size/2; i++){
+            if (i < size/2) {
+                xLo.addFirst(xIterator.next());
+                yLo.addFirst(yIterator.next());
+            } else {
+                xHi.addFirst(xIterator.next());
+                yHi.addFirst(xIterator.next());
             }
-            x = newX;
-            y = newY;
-        }
-        //x.length = even
-        
-        int xLoIndex = (x.length/2)-1;
-        int yLoIndex = (y.length/2)-1;
-        
-        int[] xLo = new int[x.length/2];
-        int[] yLo = new int[y.length/2];
-        int[] xHi = new int[x.length/2];
-        int[] yHi = new int[y.length/2];
-        
-        for (int i = 0; i < x.length/2; i++){
-            xHi[i] = x[i];
-            yHi[i] = y[i];
-            xLo[i] = x[i+x.length/2];
-            yLo[i] = y[i+y.length/2];
         }
         
-        int[] xHiyHi = multiply(xHi, yHi, b);
-        int[] xLoyLo = multiply(xLo, yLo, b);
+        LinkedList<Integer> xHiyHi = multiply(xHi, yHi, b);
+        LinkedList<Integer> xLoyLo = multiply(xLo, yLo, b);
         //three = (xHi+xLo)*(yHi+yLo)
-        int[] three = multiply(add(xHi, xLo, b), add(yHi, yLo, b), b);
+        LinkedList<Integer> three = multiply(add(xHi, xLo, b), add(yHi, yLo, b), b);
         
-        int[] four = subtract(three, add(xHiyHi, xLoyLo, b), b);
+        LinkedList<Integer> four = subtract(three, add(xHiyHi, xLoyLo, b), b);
         
-        System.out.println(Arrays.toString(xHiyHi));
-        
-        int[] one = new int[xHiyHi.length + x.length];
-        for(int i=0; i < xHiyHi.length; i++) {
-            one[i] = xHiyHi[i];
-        }
-        System.out.println(Arrays.toString(one));
-        
-        int[] fourTwo = new int[four.length + x.length/2];
-        for(int i=0; i < four.length; i++) {
-            fourTwo[i] = four[i];
+        //shift bits n places to the left
+        for (int i = 0; i < size; i++) {
+            xHiyHi.addLast(0);
         }
         
-        int[] newFourTwo = new int[one.length];
-        for(int i=0; i < fourTwo.length; i++) {
-            newFourTwo[i + (newFourTwo.length - fourTwo.length)] = fourTwo[i];
-        }
-        
-        int[] newxLoyLo = new int[one.length];
-        for(int i=0; i < xLoyLo.length; i++) {
-            newxLoyLo[i + (newxLoyLo.length - xLoyLo.length)] = xLoyLo[i];
-        }
-        System.out.println(one.length == newFourTwo.length);
-        System.out.println(one.length == newxLoyLo.length);        
+        for (int i = 0; i < size/2; i++) {
+            four.addLast(0);
+        }        
         
         //return one + fourTwo + xLoyLo
-        return add(add(one, newFourTwo, b), newxLoyLo, b);
+        return add(add(xHiyHi, four, b), xLoyLo, b);
     }
 }
