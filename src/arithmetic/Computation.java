@@ -27,10 +27,9 @@ public class Computation {
     private LinkedList<Integer> m;
     private LinkedList<Integer> answer;
     
-    public int radix;
+    private final int radix;
     public String type;
     public int countAdd = 0;
-    public int countSub = 0;
     public int countMul = 0;
     //TODO: answ-a, answ-b, and answ-d
     
@@ -54,6 +53,10 @@ public class Computation {
     }
     
     /* basic getters */
+    int getRadix() {
+        return radix;
+    }
+    
     public String getXAsString() {
         return xString;
     }
@@ -86,12 +89,8 @@ public class Computation {
         return answer.isEmpty() ? null : answer;
     }
     
-    public int getCountMul() {
+    public int getCountMultiply() {
         return countMul;
-    }
-    
-    public int getCountSub() {
-        return countSub;
     }
     
     public int getCountAdd() {
@@ -104,17 +103,14 @@ public class Computation {
         //TODO: do sth with answerString
     }
     
-    public void incCountMultiply() {
-        countMul++;
+    public void changeCountMultiply(int iChange) {
+        countMul += iChange;
     }
     
-    public void incCountSubtract() {
-        countSub++;
+    public void changeCountAdd(int iChange) {
+        countAdd += iChange;
     }
     
-    public void incCountAdd() {
-        countAdd++;
-    }
     
     /*Other stuff*/
     @Override
