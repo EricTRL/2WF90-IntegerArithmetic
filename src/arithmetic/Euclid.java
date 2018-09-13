@@ -1,9 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package arithmetic;
+import java.util.LinkedList;
+import java.util.Arrays;
+import static arithmetic.Subtraction.subtract;
+
 
 /**
  * @author E.M.A. Arts (1004076)
@@ -11,40 +15,76 @@ package arithmetic;
  * @author R.M. Jonker (1011291)
  * @author S. Jacobs (1005276)
  * @author M. Schotsman (0995661)
- * 
+ *
  * @since 6 SEPTEMBER 2018
  */
 public class Euclid {
-    public static void main(String args[]) {
-
-    }
-    /**
-     * Extended Eucledian algorithm for finding the gcd(x,y)=xa+yb
-     * @param x array containing first number
-     * @param y array with second number
-     * @param b radix to be used in th computation
-     * @return  answer[0][0, k]= gcd(x,y)
-     *          answer[1][0, l]= a
-     *          answer[2][0, m]= b
-     *          with a,b s.t. gcd(x,y)=ax+by
-     */
-    public static EuclidTriple euclid(int[] x, int[] y, int[] b) {
-        int[] x_prime = x;
-        int[] y_prime = y;
-
-
-
-        return new EuclidTriple(0, 0, 0);
-    }
-
-    public static class EuclidTriple {
-        int d, a, b;
-        public EuclidTriple(int d, int a, int b) {
-            this.d = d; this.a = a; this.b = b;
+    public static void main(String[] args) {
+        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(1,2));
+        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(2,3));
+        
+        for (int x : euclid(a, b, 10)) {
+            System.out.print(x);
         }
-        public int getA() {return this.a;}
-        public int getB() {return this.b;}
-        public int getD() {return this.d;}
     }
-
+    public static int[] euclid (LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+        LinkedList<Integer> a1 = new LinkedList<>(Arrays.asList(1));
+        LinkedList<Integer> a2 = new LinkedList<>(Arrays.asList(0));
+        LinkedList<Integer> b1 = new LinkedList<>(Arrays.asList(0));
+        LinkedList<Integer> b2 = new LinkedList<>(Arrays.asList(1));
+        
+        if(!isGreaterThan(x,y)){
+            LinkedList<Integer> dummy = (LinkedList) x.clone();
+            x = (LinkedList) y.clone();
+            y = (LinkedList) dummy.clone();
+        }
+        
+        while(checkNotZero(y)){
+            
+        }
+        
+        
+        return null;
+    }
+    
+    public static boolean isGreaterThan(LinkedList<Integer> x, LinkedList<Integer> y){
+        for(int i = 0; i < x.size();i++){
+            if(x.get(i) > y.get(i)){
+                return true;
+            }else if(y.get(i) > x.get(i)){
+                return false;
+            }
+        }
+        //If equal return true
+        return true;
+    }
+    
+    public static boolean checkNotZero(LinkedList<Integer> y){
+        for(int i =0 ; i < y.size();i++){
+            if(y.get(i) != 0){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    //We can assume that x > y
+    public static LinkedList<Integer> divide(LinkedList<Integer> x, LinkedList<Integer> y, int b){
+        int q = 0;
+        while( isGreaterThan(x,y)){
+            x = subtract(x,y,b);
+            q++;
+        }
+        LinkedList<Integer> power = new LinkedList<>(Arrays.asList(1));
+        LinkedList<Integer> radix = new LinkedList<>(Arrays.asList(b));
+        LinkedList<Integer> q_ = new LinkedList<>();
+        
+        int counter = 0;
+        while(power.get(0) < q){
+            power.set(0,multiplicate(power,radix,b));
+            counter++;
+        }
+        q_.set(counter-1,)
+    }
+    
 }
