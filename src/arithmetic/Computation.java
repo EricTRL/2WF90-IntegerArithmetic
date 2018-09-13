@@ -30,6 +30,7 @@ public class Computation {
     public int radix;
     public String type;
     public int countAdd = 0;
+    public int countSub = 0;
     public int countMul = 0;
     //TODO: answ-a, answ-b, and answ-d
     
@@ -85,10 +86,34 @@ public class Computation {
         return answer.isEmpty() ? null : answer;
     }
     
+    public int getCountMul() {
+        return countMul;
+    }
+    
+    public int getCountSub() {
+        return countSub;
+    }
+    
+    public int getCountAdd() {
+        return countAdd;
+    }
+    
     /*Basic setters */
     public void setAnswer(LinkedList answer) {
         this.answer = answer;
         //TODO: do sth with answerString
+    }
+    
+    public void incCountMultiply() {
+        countMul++;
+    }
+    
+    public void incCountSubtract() {
+        countSub++;
+    }
+    
+    public void incCountAdd() {
+        countAdd++;
     }
     
     /*Other stuff*/
