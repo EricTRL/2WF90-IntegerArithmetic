@@ -1,6 +1,6 @@
 package arithmetic;
 
-import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
  * Data structure that stores a computation. Includes things like the type (add,
@@ -22,15 +22,15 @@ public class Computation {
     private String mString;
     private String answerString;
     
-    private int[] x;
-    private int[] y;
-    private int[] m;
-    private int[] answer;
-    private boolean answered = false;
+    private LinkedList<Integer> x;
+    private LinkedList<Integer> y;
+    private LinkedList<Integer> m;
+    private LinkedList<Integer> answer;
     
     public int radix;
     public String type;
     public int countAdd = 0;
+    public int countSub = 0;
     public int countMul = 0;
     //TODO: answ-a, answ-b, and answ-d
     
@@ -43,9 +43,9 @@ public class Computation {
         this.mString = m;
         
         //convert the read strings to 'our' data structure: an array of ints
-        this.x = convertStringToIntArray(x);
-        this.y = convertStringToIntArray(y);
-        this.m = convertStringToIntArray(m);
+        this.x = convertStringToIntLinkedList(x);
+        this.y = convertStringToIntLinkedList(y);
+        this.m = convertStringToIntLinkedList(m);
         
         //safety check
         if (radix > 16 || radix < 1) {
@@ -67,30 +67,53 @@ public class Computation {
     }
     
     public String getAnswerAsString() {
-        return answered ? answerString : null;
+        return answer.isEmpty() ? null : answerString;
     }
     
-    public int[] getX() {
+    public LinkedList getX() {
         return x;
     }
     
-    public int[] getY() {
+    public LinkedList getY() {
         return y;
     }
     
-    public int[] getM() {
+    public LinkedList getM() {
         return m;
     }
     
-    public int[] getAnswer() {
-        return answered ? answer : null;
+    public LinkedList getAnswer() {
+        return answer.isEmpty() ? null : answer;
+    }
+    
+    public int getCountMul() {
+        return countMul;
+    }
+    
+    public int getCountSub() {
+        return countSub;
+    }
+    
+    public int getCountAdd() {
+        return countAdd;
     }
     
     /*Basic setters */
-    public void setAnswer(int[] answer) {
+    public void setAnswer(LinkedList answer) {
         this.answer = answer;
-        answered = true;
         //TODO: do sth with answerString
+    }
+    
+    public void incCountMultiply() {
+        countMul++;
+    }
+    
+    public void incCountSubtract() {
+        countSub++;
+    }
+    
+    public void incCountAdd() {
+        countAdd++;
     }
     
     /*Other stuff*/
@@ -107,12 +130,12 @@ public class Computation {
      *      && 1 <= radix of each character in xString <= 16
      * @returns 
     **/
-    private int[] convertStringToIntArray(String xString) {
+    private LinkedList convertStringToIntLinkedList(String xString) {
         //handle negative numbers
         boolean negative = xString.charAt(0) == '-';
 
         //initialize 'our' data structure
-        int[] x = new int[xString.length() - (negative ? 1 : 0)];
+        LinkedList<Integer> x = new LinkedList<>(); //int[xString.length() - (negative ? 1 : 0)];
         
         //convert all characters to our data format
         //start at the 2nd character if the number is negative (to skip '-')
@@ -121,11 +144,11 @@ public class Computation {
             char c = xString.charAt(i);
             //if the number is negative, all ints in the array should be negative
             //in order for subtraction to properly work
-            x[i - iStart] = Character.getNumericValue(c)*(negative ? -1 : 1);
+            x.addLast(Character.getNumericValue(c)*(negative ? -1 : 1));
         }
         
         //System.out.println("xString: "+xString);
-        //System.out.println("x: "+Arrays.toString(x));
+        //System.out.println("x: "+ x);
         return x;
     }
 
