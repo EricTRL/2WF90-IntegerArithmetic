@@ -35,11 +35,13 @@ public class Arithmetic {
     }
     public static void equal(LinkedList<Integer> x, LinkedList<Integer> y) {
         if (x.size()<y.size()) {
-            for (int i = 0; i < y.size()-x.size(); i++) {
+            int sizeDiff = y.size()-x.size();
+            for (int i = 0; i < sizeDiff; i++) {
                 x.addFirst(0);
             }
         } else if (x.size()>y.size()) {
-            for (int i = 0; i < x.size()-y.size(); i++) {
+            int sizeDiff = x.size()-y.size();
+            for (int i = 0; i < sizeDiff; i++) {
                 y.addFirst(0);
             }
         }

@@ -18,8 +18,8 @@ import java.util.Arrays;
  */
 public class Multiplication {
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(7));
-        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(4));
+        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(2,5,0));
+        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(0,1,2));
         for (int x : multiply(a, b, 10)) {
             System.out.print(x+" ");
         }
@@ -38,8 +38,9 @@ public class Multiplication {
         int zerosAdded = 0; //amount of zeros added at the end (increases by one every iteration of i)
         int carryPlacementCount = 0; // place where carry has to be added
         int arrayExtendedByAmount = 0; // to compensate for a longer array cause of addition implementation
-        LinkedList<Integer> answer = new LinkedList<>();
+        LinkedList<Integer> answer = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> answerToAdd = new LinkedList<>();
+        //equal(x,y); //Make the numbers of the same size by adding 0's to the smaller number
         for (int i = y.size(); i > 0; i--) {
             for (int j = x.size(); j > 0; j--) {
                 //answerToAdd.set((x.size()*2)-(x.size()-j)-zerosAdded-1+arrayExtendedByAmount, (x.get(j-1)*y.get(i-1) + carry)%b); //compute new value
@@ -77,18 +78,12 @@ public class Multiplication {
                 arrayExtendedByAmount++; //increase array extension counter
             }
             */
-            System.out.println("current answer: ");
-            for (int digit : answerToAdd) {
-                System.out.print(digit);
-            }
-            System.out.println();
-            System.out.println("Current total answer: ");
+            System.out.println("current total answer: " + answer);
+            System.out.println("current answerToAdd: " + answerToAdd);
             answer = Addition.add(answer, answerToAdd, b); //add current result to total result
             answerToAdd = new LinkedList<>(); //reset answerToAdd array
             
-            for (int digit : answer) {
-                System.out.print(digit);
-            }
+            System.out.println("total answer after addition: " + answer);
             System.out.println();
         }
         return answer;
