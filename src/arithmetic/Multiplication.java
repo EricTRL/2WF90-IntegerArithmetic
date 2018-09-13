@@ -5,6 +5,8 @@
  */
 package arithmetic;
 
+import java.util.LinkedList;
+
 /**
  * @author E.M.A. Arts (1004076)
  * @author K. Degeling (1018025)
@@ -18,9 +20,6 @@ public class Multiplication {
     public static void main(String[] args) {
         int[] a = {1,1,1,0,0,0,1};
         int[] b = {1,0,0,1,1,0,1};
-        for (int x : multiply(a, b, 2)) {
-            System.out.print(x+" ");
-        }
     }
     /**
      * Multiply large numbers in radix b
@@ -31,14 +30,14 @@ public class Multiplication {
      * @pre x.length==y.length
      * @return x*y in radix b
      */
-    public static int[] multiply (int[] x, int[] y, int b) {
+    public static LinkedList<Integer> multiply (LinkedList<Integer> x, LinkedList<Integer> y, int b) {
         int carry = 0; //optional carry we need to add.
         int zerosAdded = 0; //amount of zeros added at the end (increases by one every iteration of i)
         int carryPlacementCount = 0; // place where carry has to be added
         int arrayExtendedByAmount = 0; // to compensate for a longer array cause of addition implementation
-        int[] answer = new int[x.length*2];
-        int[] answerToAdd = new int[x.length*2];
-        for (int i = y.length; i > 0; i--) {
+        int[] answer = new int[x.size()*2];
+        int[] answerToAdd = new int[x.size()*2];
+        /**for (int i = y.length; i > 0; i--) {
             for (int j = x.length; j > 0; j--) {
                 answerToAdd[(x.length*2)-(x.length-j)-zerosAdded-1+arrayExtendedByAmount] = (x[j-1]*y[i-1] + carry)%b; //compute new value
                 //compute carry
@@ -67,10 +66,9 @@ public class Multiplication {
                 arrayExtendedByAmount++; //increase array extension counter
             }
             
-            answer = Addition.add(answer, answerToAdd, b); //add current result to total result
+            //answer = Addition.add(answer, answerToAdd, b); //add current result to total result
             answerToAdd = new int[answerToAdd.length]; //reset answerToAdd array
-        }
-        return answer;
+        }*/
+        return new LinkedList<Integer>();
     }
-    
 }

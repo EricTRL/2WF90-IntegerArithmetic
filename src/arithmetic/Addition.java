@@ -5,6 +5,7 @@
  */
 package arithmetic;
 
+
 /**
  * Class that adds two large (integer) numbers x,y with radix b.
  */
@@ -24,9 +25,9 @@ import java.util.LinkedList;
 public class Addition {
     public static void main(String[] args) {
         LinkedList<Integer> a = new LinkedList<>();
-        a.add(1); a.add(7);
+        a.add(2); a.add(8);
         LinkedList<Integer> b = new LinkedList<>();
-        b.add(-2); b.add(-4);
+        b.add(0);
         for(Integer x : add(a, b, 10)) {
             System.out.print(x);
         }
@@ -41,7 +42,7 @@ public class Addition {
      * @return x + y in radix b
      */
     public static LinkedList<Integer> add (LinkedList<Integer> x, LinkedList<Integer> y, int b) {
-        equal(x, y);
+        Arithmetic.equal(x, y);
         int carry = 0; //optional carry we need to add.
         LinkedList<Integer> answer = new LinkedList<>();
         Iterator<Integer> it1 = x.descendingIterator(); Iterator<Integer> it2 = y.descendingIterator();
@@ -57,25 +58,8 @@ public class Addition {
             }
         }
         if (answer.getFirst()<0) {
-            negative(answer);
+            Arithmetic.negative(answer);
         }
         return answer;
     }
-    private static void negative(LinkedList<Integer> answer) {
-        for (int i = 0; i < answer.size(); i++) {
-            answer.set(i, Math.abs(answer.get(i))*-1);
-        }
-    }
-    private static void equal(LinkedList<Integer> x, LinkedList<Integer> y) {
-        if (x.size()<y.size()) {
-            for (int i = 0; i < y.size()-x.size(); i++) {
-                x.addLast(0);
-            }
-        } else if (x.size()>y.size()) {
-            for (int i = 0; i < x.size()-y.size(); i++) {
-                y.addLast(0);
-            }
-        }
-    }
-    
 }

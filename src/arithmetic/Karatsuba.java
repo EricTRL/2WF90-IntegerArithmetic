@@ -67,7 +67,7 @@ public class Karatsuba {
         //three = (xHi+xLo)*(yHi+yLo)
         LinkedList<Integer> three = multiply(add(xHi, xLo, b), add(yHi, yLo, b), b);
         
-        LinkedList<Integer> four = subtract(three, add(xHiyHi, xLoyLo, b), b);
+        LinkedList<Integer> four = null;//subtract(three, add(xHiyHi, xLoyLo, b), b);
         
         //shift bits n places to the left
         for (int i = 0; i < size; i++) {

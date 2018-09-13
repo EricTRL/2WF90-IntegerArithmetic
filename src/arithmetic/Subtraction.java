@@ -5,6 +5,9 @@
  */
 package arithmetic;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 /**
  * @author E.M.A. Arts (1004076)
  * @author K. Degeling (1018025)
@@ -16,10 +19,12 @@ package arithmetic;
  */
 public class Subtraction {
     public static void main(String[] args) {
-        int[] a = {-8, 0}; int[] b = {-5, -1};
-        int[] x = subtract(a, b, 10);
-        for (int y : x) {
-            System.out.print(y+" ");
+        LinkedList<Integer> a = new LinkedList<>();
+        a.add(2); a.add(8);
+        LinkedList<Integer> b = new LinkedList<>();
+        b.add(-5);
+        for(Integer x : subtract(a, b, 10)) {
+            System.out.print(x);
         }
     }
     /**
@@ -31,30 +36,32 @@ public class Subtraction {
      * @pre x.length==y.length
      * @post x - y radix b
      */
-    public static int[] subtract(int[] x, int[] y, int b) {
+    public static LinkedList<Integer> subtract(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+        Arithmetic.equal(x, y);
         if (lessThan(x, y)) { // x < y
-            int[] answer = subtract(y, x, b);
-            for (int i = 0; i < answer.length; i++) {
-                answer[i] = -1*answer[i];
-            }
+            LinkedList<Integer> answer = subtract(y, x, b);
+            Arithmetic.negative(answer);
             return answer;
         }
         //Assumption x > y
         int carry = 0;
-        int[] answer = new int[x.length+1];
-        for (int i = answer.length-1; i > 0; i--) {
-            answer[i] = x[i-1] - y[i-1] - carry;
-            if (answer[i]<0) {
-                answer[i] = answer[i]+b;
-                carry = 1;
-            } else if (answer[i]>=b) {
-                answer[i] = answer[i]%b;
+        LinkedList<Integer> answer = new LinkedList<>();
+        Iterator<Integer> xIt = x.descendingIterator(); Iterator<Integer> yIt = y.descendingIterator();
+        while (xIt.hasNext() && yIt.hasNext()) {
+            answer.addFirst(xIt.next() - yIt.next() + carry);
+            if (answer.getFirst()<0) {
+                answer.set(0, answer.getFirst()+b);
+                carry = -1;
+            } else if (answer.getFirst()>=b) {
+                answer.set(0, answer.getFirst()%b);
                 carry = 1;
             } else {
                 carry = 0;
             }
         }
-        answer[0] = carry;
+        if (carry>0) {
+            answer.addFirst(carry);
+        }
         return answer;
     }
 
@@ -65,12 +72,13 @@ public class Subtraction {
      * @pre x.length == y.length
      * @return x < y
      */
-    public static boolean lessThan(int[] x, int[] y) {
-        for (int i = 0; i < x.length; i++) {
-            if (y[i]<x[i]) {
-                return false;
-            } else if (x[i]<y[i]) {
-                return true;
+    public static boolean lessThan(LinkedList<Integer> x, LinkedList<Integer> y) {
+        Iterator<Integer> xIt = x.descendingIterator(); Iterator<Integer> yIt = y.descendingIterator();
+        while (xIt.hasNext() && yIt.hasNext()) {
+            if (xIt.next()>yIt.next()) {
+                return false; //x>y
+            } else if (yIt.next()>xIt.next()) {
+                return true; //x<y
             }
         }
         return false; //x==y, thus we output false
