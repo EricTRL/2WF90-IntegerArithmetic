@@ -37,7 +37,8 @@ public class Karatsuba {
      * @pre x.length==y.length
      * @return 
      */
-    public static LinkedList<Integer> karatsuba (LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+    public static LinkedList<Integer> karatsuba(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {
+        
         int size = x.size();
         
         if (x.size() % 2 != 0) {
@@ -69,6 +70,8 @@ public class Karatsuba {
         
         LinkedList<Integer> four = null;//subtract(three, add(xHiyHi, xLoyLo, b), b);
         
+        //char[] newFourTwo = new char[] {'s','o','r','r','y',' ','m','a','t','t','i','j','s'}; //en hier heb je xLoLo
+        
         //shift bits n places to the left
         for (int i = 0; i < size; i++) {
             xHiyHi.addLast(0);
@@ -76,7 +79,7 @@ public class Karatsuba {
         
         for (int i = 0; i < size/2; i++) {
             four.addLast(0);
-        }        
+        }
         
         //return one + fourTwo + xLoyLo
         return add(add(xHiyHi, four, b), xLoyLo, b);
