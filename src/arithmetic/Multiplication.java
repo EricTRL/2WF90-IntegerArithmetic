@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package arithmetic;
+import java.util.LinkedList;
+import java.util.Arrays;
 
 /**
  * @author E.M.A. Arts (1004076)
@@ -16,9 +18,9 @@ package arithmetic;
  */
 public class Multiplication {
     public static void main(String[] args) {
-        int[] a = {1,1,1,0,0,0,1};
-        int[] b = {1,0,0,1,1,0,1};
-        for (int x : multiply(a, b, 2)) {
+        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(7));
+        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(4));
+        for (int x : multiply(a, b, 10)) {
             System.out.print(x+" ");
         }
     }
@@ -31,30 +33,38 @@ public class Multiplication {
      * @pre x.length==y.length
      * @return x*y in radix b
      */
-    public static int[] multiply (int[] x, int[] y, int b) {
+    public static LinkedList<Integer> multiply (LinkedList<Integer> x, LinkedList<Integer> y, int b) {
         int carry = 0; //optional carry we need to add.
         int zerosAdded = 0; //amount of zeros added at the end (increases by one every iteration of i)
         int carryPlacementCount = 0; // place where carry has to be added
         int arrayExtendedByAmount = 0; // to compensate for a longer array cause of addition implementation
-        int[] answer = new int[x.length*2];
-        int[] answerToAdd = new int[x.length*2];
-        for (int i = y.length; i > 0; i--) {
-            for (int j = x.length; j > 0; j--) {
-                answerToAdd[(x.length*2)-(x.length-j)-zerosAdded-1+arrayExtendedByAmount] = (x[j-1]*y[i-1] + carry)%b; //compute new value
+        LinkedList<Integer> answer = new LinkedList<>();
+        LinkedList<Integer> answerToAdd = new LinkedList<>();
+        for (int i = y.size(); i > 0; i--) {
+            for (int j = x.size(); j > 0; j--) {
+                //answerToAdd.set((x.size()*2)-(x.size()-j)-zerosAdded-1+arrayExtendedByAmount, (x.get(j-1)*y.get(i-1) + carry)%b); //compute new value
+                answerToAdd.addFirst((x.get(j-1)*y.get(i-1) + carry)%b); // insert result of multiplication at beginning of list
                 //compute carry
-                if (Math.abs(x[j-1]*y[i-1]+carry)>=b) {
-                    carry = (x[j-1]*y[i-1]+carry)/b;
+                if (Math.abs(x.get(j-1)*y.get(i-1)+carry)>=b) {
+                    carry = (x.get(j-1)*y.get(i-1)+carry)/b;
                 } else {
                     carry = 0;
                 }
-                carryPlacementCount = (x.length*2)-(x.length-j)-zerosAdded-2+arrayExtendedByAmount; //Keep track of where to place carry (only needed after j for-loop)
+                carryPlacementCount = (x.size()*2)-(x.size()-j)-zerosAdded-2+arrayExtendedByAmount; //Keep track of where to place carry (only needed after j for-loop)
             }
             
-            answerToAdd[carryPlacementCount] = carry; //Place carry
+            //answerToAdd.set(carryPlacementCount, carry); //Place carry
+            if (carry != 0) {
+                answerToAdd.addFirst(carry);
+            }
             carry = 0; //reset carry
+            for (int z = zerosAdded; z > 0; z--) {
+                answerToAdd.addLast(0);
+            }
             zerosAdded++; //Increase zerosAdded counter for next iteration
             
             // Increase size of answerToAdd if Addition.add increased the size of the answer array
+            /*
             if (answer.length>answerToAdd.length) {
                 int[] backupAnswerToAdd = new int[answerToAdd.length];
                 for (int a = 0; a < answerToAdd.length; a++) {
@@ -66,9 +76,20 @@ public class Multiplication {
                 }
                 arrayExtendedByAmount++; //increase array extension counter
             }
-            
+            */
+            System.out.println("current answer: ");
+            for (int digit : answerToAdd) {
+                System.out.print(digit);
+            }
+            System.out.println();
+            System.out.println("Current total answer: ");
             answer = Addition.add(answer, answerToAdd, b); //add current result to total result
-            answerToAdd = new int[answerToAdd.length]; //reset answerToAdd array
+            answerToAdd = new LinkedList<>(); //reset answerToAdd array
+            
+            for (int digit : answer) {
+                System.out.print(digit);
+            }
+            System.out.println();
         }
         return answer;
     }
