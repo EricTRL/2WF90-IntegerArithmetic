@@ -25,7 +25,7 @@ public class Karatsuba {
         a.addLast(8);
         
         LinkedList<Integer> b = new LinkedList<>(a);
-        System.out.println(karatsuba(a,b,10));
+        System.out.println(karatsuba(a, b, 10, null));
     }
     
     /**
@@ -34,8 +34,10 @@ public class Karatsuba {
      * @param x array with first number
      * @param y array with second number
      * @param b radix to be used
-     * @pre x.length==y.length
-     * @return 
+     * @param computation Computation to increment [count-mul] and [count-add] of (or null if we don't care)
+     * @pre x != null && y != null && b \in N && b <= 16
+     * @modifies computation.countMul && computation.countAdd
+     * @return The result of x*y using Karatsuba Multiplication
      */
     public static LinkedList<Integer> karatsuba(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {
         
@@ -63,12 +65,12 @@ public class Karatsuba {
             }
         }
         
-        LinkedList<Integer> xHiyHi = multiply(xHi, yHi, b);
-        LinkedList<Integer> xLoyLo = multiply(xLo, yLo, b);
+        LinkedList<Integer> xHiyHi = multiply(xHi, yHi, b, computation);
+        LinkedList<Integer> xLoyLo = multiply(xLo, yLo, b, computation);
         //three = (xHi+xLo)*(yHi+yLo)
-        LinkedList<Integer> three = multiply(add(xHi, xLo, b), add(yHi, yLo, b), b);
+        LinkedList<Integer> three = multiply(add(xHi, xLo, b, computation), add(yHi, yLo, b, computation), b, computation);
         
-        LinkedList<Integer> four = null;//subtract(three, add(xHiyHi, xLoyLo, b), b);
+        LinkedList<Integer> four = subtract(three, add(xHiyHi, xLoyLo, b, computation), b, computation);
         
         //char[] newFourTwo = new char[] {'s','o','r','r','y',' ','m','a','t','t','i','j','s'}; //en hier heb je xLoLo
         
@@ -82,6 +84,6 @@ public class Karatsuba {
         }
         
         //return one + fourTwo + xLoyLo
-        return add(add(xHiyHi, four, b), xLoyLo, b);
+        return add(add(xHiyHi, four, b, computation), xLoyLo, b, computation);
     }
 }

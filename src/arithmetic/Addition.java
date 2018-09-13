@@ -10,6 +10,7 @@ package arithmetic;
  * Class that adds two large (integer) numbers x,y with radix b.
  */
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -24,10 +25,8 @@ import java.util.LinkedList;
  */
 public class Addition {
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>();
-        a.add(2); a.add(8);
-        LinkedList<Integer> b = new LinkedList<>();
-        b.add(0);
+        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(1,0,0,0,0,0));
+        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(5,0,0,0));
         for(Integer x : add(a, b, 10)) {
             System.out.print(x);
         }
