@@ -3,6 +3,8 @@ package io;
 
 import arithmetic.Computation;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -19,9 +21,15 @@ import java.util.Scanner;
  */
 public class InputReader {
     
-    //input and output directories
-    protected static final File INPUT = new File("res/input.txt");
-    //protected static final File OUTPUT = new File("res/output.txt");
+    //input directories
+    protected static final File DEFAULT_INPUT_FILE_PATH = new File("res/");
+    protected static final String DEFAULT_INPUT_FILE_NAME = "input.txt";
+    protected static final File DEFAULT_INPUT_FILE = new File(DEFAULT_INPUT_FILE_PATH + "/" + DEFAULT_INPUT_FILE_NAME);
+    
+    //create neccesary folder structure
+    static {
+        DEFAULT_INPUT_FILE_PATH.mkdirs();
+    }
     
     private final Scanner lineScanner;
     
@@ -29,6 +37,10 @@ public class InputReader {
     //to read from a file pass the following: new FileInputStream(FILE)
     public InputReader(InputStream streamIn) {
         this.lineScanner = new Scanner(streamIn);
+    }
+    
+    public InputReader() throws FileNotFoundException {
+        this(new FileInputStream(DEFAULT_INPUT_FILE));
     }
     
     /**
@@ -41,7 +53,7 @@ public class InputReader {
         int radix = -1;
         String x = "0";
         String y = "0";
-        String m = "-1";
+        String m = "[INVALID]";
         
         //keep reading lines until we encounter an empty one
         String line;

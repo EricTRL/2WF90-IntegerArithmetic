@@ -1,9 +1,11 @@
 package arithmetic;
 
 import io.*;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This is the base class that is run.
@@ -20,13 +22,29 @@ import java.util.LinkedList;
  */
 public class Arithmetic {   
     
-    public static void main(String args[]) {
-        InputReader reader = new InputReader(System.in);
-        System.out.println(reader.getNextComputation());
-        //System.out.println(reader.getNextComputation());
-        //System.out.println(reader.getNextComputation());
-        //System.out.println(reader.getNextComputation());
+    public static void main(String args[]) throws FileNotFoundException {
+        //expects res/Input.txt to exist
+        InputReader reader = new InputReader();
         
+        List<Computation> computations = new LinkedList<>();
+        
+        Computation c;
+        while ((c = reader.getNextComputation()) != null) {
+            switch (c.getType()) {
+                case "[add]": c.setAnswer(Addition.add(c)); break;
+                case "[subtract]": c.setAnswer(Subtraction.subtract(c)); break;
+                case "[multiply]": c.setAnswer(Multiplication.multiply(c)); break;
+                case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
+                case "[reduce]": break;
+                case "[inverse]": break;
+                case "[euclid]": break;
+                default: System.err.println("Unexpected type found: " + c.getType()); break;
+            }
+
+            computations.add(c);
+        }
+        //OutputWriter.writeOutput(computations);
+        OutputWriter.writeOutput(computations); //writes to res/output.txt by default
     }
 
     public static void negative(LinkedList<Integer> answer) {

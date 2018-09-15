@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arithmetic;
 
 import java.util.Iterator;
@@ -19,10 +14,15 @@ import java.util.LinkedList;
  */
 public class Subtraction {
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Computation.convertStringToIntLinkedList("10"));
-        LinkedList<Integer> b = new LinkedList<>(Computation.convertStringToIntLinkedList("-100"));
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("10"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("-100"));
         System.out.println(subtract(a, b, 10, null));
     }
+    
+    public static LinkedList<Integer> subtract(Computation c) {
+        return subtract(c.getX(), c.getY(), c.getRadix(), c);
+    }
+    
     /**
      * subtraction of two large integers x and y
      *

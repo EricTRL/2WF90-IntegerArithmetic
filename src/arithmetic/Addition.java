@@ -23,10 +23,20 @@ import java.util.LinkedList;
  */
 public class Addition {
     public static void main(String[] args) {        
-        LinkedList<Integer> a = new LinkedList<>(Computation.convertStringToIntLinkedList("10"));
-        LinkedList<Integer> b = new LinkedList<>(Computation.convertStringToIntLinkedList("-100"));
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("10"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("-100"));
         System.out.println(add(a, b, 10, null));
     }
+    
+    /**
+     * Adds c.x and x.y with radix c.radix
+     * @param c
+     * @return 
+     */
+    public static LinkedList<Integer> add(Computation c) {
+        return add(c.getX(), c.getY(), c.getRadix(), c);
+    }
+    
     /**
      * Adds two large numbers in radix b
      *
@@ -38,7 +48,7 @@ public class Addition {
      * @pre x.length==y.length
      * @return x + y in radix b
      */
-    public static LinkedList<Integer> add (LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {        
+    public static LinkedList<Integer> add(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {        
         Arithmetic.makeLengthsEqual(x, y);
         //System.out.println(x);
         //System.out.println(y);

@@ -1,12 +1,10 @@
 package arithmetic;
 
-
+import java.util.Iterator;
+import java.util.LinkedList;
 import static arithmetic.Addition.add;
 import static arithmetic.Multiplication.multiply;
 import static arithmetic.Subtraction.subtract;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * @author E.M.A. Arts (1004076)
@@ -18,14 +16,13 @@ import java.util.LinkedList;
  * @since 6 SEPTEMBER 2018
  */
 public class Karatsuba {    
-    public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(1,0,0,1,2));
-        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(1,0,0,2,5,0));
-        System.out.println(karatsuba(a, b, 10, null, 1));
+    
+    public static LinkedList<Integer> karatsuba(Computation c) {
+        return karatsuba(c.getX(), c.getY(), c.getRadix(), c, 1);
     }
     
     /**
-     * Adds to large numbers in radix b
+     * Multiplies two large numbers in radix b
      *
      * @param x array with first number
      * @param y array with second number

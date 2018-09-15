@@ -21,16 +21,23 @@ public class Computation {
     private String yString;
     private String mString;
     private String answerString;
+    private String answDString;
+    private String answAString;
+    private String answBString;
     
     private LinkedList<Integer> x;
     private LinkedList<Integer> y;
     private LinkedList<Integer> m;
-    private LinkedList<Integer> answer;
+    private LinkedList<Integer> answer = new LinkedList<>();
+    private LinkedList<Integer> answD = new LinkedList<>();
+    private LinkedList<Integer> answA = new LinkedList<>();
+    private LinkedList<Integer> answB = new LinkedList<>();
     
     private final int radix;
-    public String type;
-    public int countAdd = 0;
-    public int countMul = 0;
+    private final String type;
+    private int countAdd = 0;
+    private int countMul = 0;
+    private boolean error = false; //indicates an error
     //TODO: answ-a, answ-b, and answ-d
     
     //constructor
@@ -42,9 +49,13 @@ public class Computation {
         this.mString = m;
         
         //convert the read strings to 'our' data structure: an array of ints
-        this.x = convertStringToIntLinkedList(x);
-        this.y = convertStringToIntLinkedList(y);
-        this.m = convertStringToIntLinkedList(m);
+        this.x = stringToList(x);
+        this.y = stringToList(y);
+        if (m.equals("[INVALID]")) {
+            this.m = new LinkedList<>();
+        } else {
+            this.m = stringToList(m);
+        }
         
         //safety check
         if (radix > 16 || radix < 1) {
@@ -53,8 +64,12 @@ public class Computation {
     }
     
     /* basic getters */
-    int getRadix() {
+    public int getRadix() {
         return radix;
+    }
+    
+    public boolean getError() {
+        return error;
     }
     
     public String getXAsString() {
@@ -70,23 +85,47 @@ public class Computation {
     }
     
     public String getAnswerAsString() {
-        return answer.isEmpty() ? null : answerString;
+        return (error || answer.isEmpty()) ? "ERROR" : answerString;
     }
     
-    public LinkedList getX() {
+    public String getAnswDAsString() {
+        return (answer.isEmpty()) ? "ERROR" : answDString;
+    }
+
+    public String getAnswAAsString() {
+        return (answer.isEmpty()) ? "ERROR" : answAString;
+    }
+
+    public String getAnswBAsString() {
+        return (answer.isEmpty()) ? "ERROR" : answBString;
+    }
+    
+    public LinkedList<Integer> getX() {
         return x;
     }
     
-    public LinkedList getY() {
+    public LinkedList<Integer> getY() {
         return y;
     }
     
-    public LinkedList getM() {
+    public LinkedList<Integer> getM() {
         return m;
     }
     
-    public LinkedList getAnswer() {
-        return answer.isEmpty() ? null : answer;
+    public LinkedList<Integer> getAnswer() {
+        return answer;
+    }
+    
+    public LinkedList<Integer> getAnswD() {
+        return answD;
+    }
+
+    public LinkedList<Integer> getAnswA() {
+        return answA;
+    }
+
+    public LinkedList<Integer> getAnswB() {
+        return answB;
     }
     
     public int getCountMultiply() {
@@ -97,11 +136,31 @@ public class Computation {
         return countAdd;
     }
     
-    /*Basic setters */
-    public void setAnswer(LinkedList answer) {
-        this.answer = answer;
-        //TODO: do sth with answerString
+    public String getType() {
+        return type;
     }
+    
+    /*Basic setters */
+    public void setAnswer(LinkedList<Integer> answer) {
+        this.answer = answer;
+        this.answerString = listToString(answer);
+    }
+    
+    public void setAnswD(LinkedList<Integer> answer) {
+        this.answD = answer;
+        this.answDString = listToString(answer);
+    }
+    
+    public void setAnswA(LinkedList<Integer> answer) {
+        this.answA = answer;
+        this.answAString = listToString(answer);
+    }
+    
+    public void setAnswB(LinkedList<Integer> answer) {
+        this.answB = answer;
+        this.answBString = listToString(answer);
+    }
+    
     
     public void changeCountMultiply(int iChange) {
         countMul += iChange;
@@ -111,6 +170,9 @@ public class Computation {
         countAdd += iChange;
     }
     
+    public void setError(boolean b) {
+        error = b;
+    }
     
     /*Other stuff*/
     @Override
@@ -126,7 +188,7 @@ public class Computation {
      *      && 1 <= radix of each character in xString <= 16
      * @return A LinkedList consisting of the integers of xString
     **/
-    public static LinkedList<Integer> convertStringToIntLinkedList(String xString) {
+    public static LinkedList<Integer> stringToList(String xString) {
         //handle negative numbers
         boolean negative = xString.charAt(0) == '-';
 
@@ -146,5 +208,23 @@ public class Computation {
         //System.out.println("x: "+ x);
         return x;
     }
-
+    
+    /**
+     * Converts a given linkedlist (in our data format) to a string
+     * @param answer LinkedList of Integers
+     * @return answer as a proper string, such that stringToList(this.return) == answer
+     */
+    public static String listToString(LinkedList<Integer> answer) {
+        boolean negative = false;
+        StringBuilder s = new StringBuilder();
+        //handle negative numbers
+        if (Arithmetic.isNegative(answer)) {
+            s.append("-");
+            negative = true;
+        }
+        for (int i_x : answer) {
+            s.append(Integer.toHexString(i_x*(negative ? -1 : 1)));
+        }
+        return s.toString();
+    }
 }

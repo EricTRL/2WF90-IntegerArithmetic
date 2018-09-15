@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package arithmetic;
 import java.util.LinkedList;
 import java.util.Arrays;
@@ -27,7 +22,7 @@ public class Euclid {
             System.out.print(x);
         }
     }
-    public static int[] euclid (LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+    public static int[] euclid(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
         LinkedList<Integer> a1 = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> a2 = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> b1 = new LinkedList<>(Arrays.asList(0));
