@@ -40,8 +40,8 @@ public class Addition {
      */
     public static LinkedList<Integer> add (LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {        
         Arithmetic.makeLengthsEqual(x, y);
-        System.out.println(x);
-        System.out.println(y);
+        //System.out.println(x);
+        //System.out.println(y);
         
         int carry = 0; //optional carry we need to add.
         LinkedList<Integer> answer = new LinkedList<>();

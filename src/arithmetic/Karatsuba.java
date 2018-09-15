@@ -19,9 +19,9 @@ import java.util.LinkedList;
  */
 public class Karatsuba {    
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(1,2));
-        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(2,5,0));
-        System.out.println(karatsuba(a, b, 10, null));
+        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(1,0,0,1,2));
+        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(1,0,0,2,5,0));
+        System.out.println(karatsuba(a, b, 10, null, 1));
     }
     
     /**
@@ -31,11 +31,12 @@ public class Karatsuba {
      * @param y array with second number
      * @param b radix to be used
      * @param computation Computation to increment [count-mul] and [count-add] of (or null if we don't care)
+     * @param minBits The number of bits at which to not apply karatsuba anymore
      * @pre x != null && y != null && b \in N && b <= 16
      * @modifies computation.countMul && computation.countAdd
      * @return The result of x*y using Karatsuba Multiplication
      */
-    public static LinkedList<Integer> karatsuba(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {
+    public static LinkedList<Integer> karatsuba(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation, int minBits) {
         //ensure that x and y can be split up in two even parts (by adding
         //leading 0s)
         if (x.size() % 2 != 0) {
@@ -52,8 +53,10 @@ public class Karatsuba {
         //cache the size (we use it often)
         int size = x.size();
         
+        /*
         System.out.println("x: " + x);
         System.out.println("y: " + y);
+        */
         
         //store the lower and higher order bits
         LinkedList<Integer> xLo = new LinkedList<>();
@@ -74,23 +77,44 @@ public class Karatsuba {
                 yLo.addLast(yIterator.next());
             }
         }
+        /*
         System.out.println("xLo: " + xLo);
         System.out.println("yLo: " + yLo);
         System.out.println("xHi: " + xHi);
         System.out.println("yHi: " + yHi);
+        */
+        
+        LinkedList<Integer> xHiyHi;
+        LinkedList<Integer> xLoyLo;
+        LinkedList<Integer> orderMult;
         
         //do the calculations
-        //xHiyHi = xHi*yHi
-        LinkedList<Integer> xHiyHi = multiply(xHi, yHi, b, computation);
-        //xLoyLo = xLo*yLo
-        LinkedList<Integer> xLoyLo = multiply(xLo, yLo, b, computation);
-        //orderMult = (xHi+xLo)*(yHi+yLo)
-        LinkedList<Integer> orderMult = multiply(add(xHi, xLo, b, computation), add(yHi, yLo, b, computation), b, computation);
+        if (size/2 <= Math.max(minBits, 1)) {
+            //end the recursion; apply primary school calculation
+            System.out.println("\t primary school ("+ size/2 +")");
+            
+            //xHiyHi = xHi*yHi
+            xHiyHi = multiply(xHi, yHi, b, computation);
+            //xLoyLo = xLo*yLo
+            xLoyLo = multiply(xLo, yLo, b, computation);
+            //orderMult = (xHi+xLo)*(yHi+yLo)
+            orderMult = multiply(add(xHi, xLo, b, computation), add(yHi, yLo, b, computation), b, computation);
+        } else {
+            //continue the recursion; apply karatsuba (again)
+            System.out.println("\t karatsuba ("+size/2+")");
+            
+            //xHiyHi = xHi*yHi
+            xHiyHi = karatsuba(xHi, yHi, b, computation, minBits);
+            //xLoyLo = xLo*yLo
+            xLoyLo = karatsuba(xLo, yLo, b, computation, minBits);
+            //orderMult = (xHi+xLo)*(yHi+yLo)
+            orderMult = karatsuba(add(xHi, xLo, b, computation), add(yHi, yLo, b, computation), b, computation, minBits);            
+        }
         
         //xHiyLo_plus_xLoyHi = orderMult - (xHiyHi + xLoyLo)
         LinkedList<Integer> xHiyLo_plus_xLoyHi = subtract(orderMult, add(xHiyHi, xLoyLo, b, computation), b, computation);
         
-        //char[] newFourTwo = new char[] {'s','o','r','r','y',' ','m','a','t','t','i','j','s'}; //en hier heb je xLoLo
+        //char[] newFourTwo = new char[] {'s','o','r','r','y',' ','m','a','t','t','i','j','s'};
         
         //shift higher order bits size places to the left
         for (int i = 0; i < size; i++) {

@@ -77,13 +77,19 @@ public class Multiplication {
                 arrayExtendedByAmount++; //increase array extension counter
             }
             */
+            
+            /*
             System.out.println("current total answer: " + answer);
             System.out.println("current answerToAdd: " + answerToAdd);
+            */
+
             answer = Addition.add(answer, answerToAdd, b, computation); //add current result to total result
             answerToAdd = new LinkedList<>(); //reset answerToAdd array
             
+            /*
             System.out.println("total answer after addition: " + answer);
             System.out.println();
+            */
         }
         return answer;
     }
