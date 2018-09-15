@@ -9,8 +9,6 @@ package arithmetic;
 /**
  * Class that adds two large (integer) numbers x,y with radix b.
  */
-
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -24,15 +22,13 @@ import java.util.LinkedList;
  * @since 6 SEPTEMBER 2018
  */
 public class Addition {
-    public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(1,0,0,0,0,0));
-        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(5,0,0,0));
-        for(Integer x : add(a, b, 10, null)) {
-            System.out.print(x);
-        }
+    public static void main(String[] args) {        
+        LinkedList<Integer> a = new LinkedList<>(Computation.convertStringToIntLinkedList("10"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.convertStringToIntLinkedList("-100"));
+        System.out.println(add(a, b, 10, null));
     }
     /**
-     * Adds to large numbers in radix b
+     * Adds two large numbers in radix b
      *
      * @param x array with first number
      * @param y array with second number
@@ -42,8 +38,11 @@ public class Addition {
      * @pre x.length==y.length
      * @return x + y in radix b
      */
-    public static LinkedList<Integer> add (LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {
+    public static LinkedList<Integer> add (LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {        
         Arithmetic.makeLengthsEqual(x, y);
+        System.out.println(x);
+        System.out.println(y);
+        
         int carry = 0; //optional carry we need to add.
         LinkedList<Integer> answer = new LinkedList<>();
         Iterator<Integer> it1 = x.descendingIterator(); Iterator<Integer> it2 = y.descendingIterator();
@@ -58,6 +57,12 @@ public class Addition {
                 carry = 0;
             }
         }
+        
+        //special case if the two highest bits provide a carry
+        if (carry > 0) {
+            answer.addFirst(carry);
+        }
+        
         if (answer.getFirst()<0) {
             Arithmetic.negative(answer);
         }

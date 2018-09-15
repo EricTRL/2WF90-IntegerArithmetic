@@ -1,6 +1,7 @@
 package arithmetic;
 
 import io.*;
+import java.util.Iterator;
 
 import java.util.LinkedList;
 
@@ -46,5 +47,86 @@ public class Arithmetic {
             }
         }
     }
+    
+    /**
+     * Removes all leading zeros from a given number
+     * @param x The number to remove the leading zeros from (if any)
+     * @modifies x
+     * @post x.peekFirst() != 0 || x.size() == 1
+     */
+    public static void removeLeadingZeros(LinkedList<Integer> x) {
+        while (x.peekFirst() == 0 && x.size() > 1) {
+            x.removeFirst();
+        }
+    }
+    
+    /**
+     * Method that compares x and y and outputs true if x < y
+     * @param x
+     * @param y
+     * @return x < y
+     */
+    public static boolean isLessThan(LinkedList<Integer> x, LinkedList<Integer> y) {
+        Arithmetic.makeLengthsEqual(x, y);
+        Iterator<Integer> xIt = x.iterator(); Iterator<Integer> yIt = y.iterator();
+        while (xIt.hasNext() && yIt.hasNext()) {
+            int x_i = xIt.next(); int y_i = yIt.next();
+            if (x_i > y_i) {
+                return false; //x>y
+            } else if (x_i < y_i) {
+                return true; //x<y
+            }
+        }
+        return false; //x==y, thus we output false
+    }
+    
+    /**
+     * Method that compares x and y and outputs true if x > y
+     * @param x
+     * @param y
+     * @return x > y
+     */
+    public static boolean isMoreThan(LinkedList<Integer> x, LinkedList<Integer> y) {
+        Arithmetic.makeLengthsEqual(x, y);
+        Iterator<Integer> xIt = x.iterator(); Iterator<Integer> yIt = y.iterator();
+        while (xIt.hasNext() && yIt.hasNext()) {
+            int x_i = xIt.next(); int y_i = yIt.next();
+            if (x_i < y_i) {
+                return false; //x>y
+            } else if (x_i > y_i) {
+                return true; //x<y
+            }
+        }
+        return false; //x==y, thus we output false
+    }
+    
+    /**
+     * Method that checks if a given number x is negative
+     * @param x Number to check
+     * @return x < 0
+     */
+    public static boolean isNegative(LinkedList<Integer> x) {
+        for (int i_x : x) {
+            if (i_x < 0) {
+                return true; //x < 0
+            }
+        }
+        return false; //x >= 0
+    }
+    
+    /**
+     * Method that checks if a given number x is positive
+     * @param x Number to check
+     * @return x > 0
+     */
+    public static boolean isPositive(LinkedList<Integer> x) {
+        for (int i_x : x) {
+            if (i_x > 0) {
+                return true; //x > 0
+            }
+        }
+        return false; //x <= 0
+    }
+    
     
 }

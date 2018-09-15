@@ -124,19 +124,18 @@ public class Computation {
      * @param xString
      * @pre xString.length <= Integer.MAX_VALUE
      *      && 1 <= radix of each character in xString <= 16
-     * @returns 
+     * @return A LinkedList consisting of the integers of xString
     **/
-    private LinkedList convertStringToIntLinkedList(String xString) {
+    public static LinkedList<Integer> convertStringToIntLinkedList(String xString) {
         //handle negative numbers
         boolean negative = xString.charAt(0) == '-';
 
         //initialize 'our' data structure
-        LinkedList<Integer> x = new LinkedList<>(); //int[xString.length() - (negative ? 1 : 0)];
+        LinkedList<Integer> x = new LinkedList<>();
         
         //convert all characters to our data format
         //start at the 2nd character if the number is negative (to skip '-')
-        int iStart = negative ? 1 : 0;
-        for (int i = iStart; i < xString.length(); i++){
+        for (int i = (negative ? 1 : 0); i < xString.length(); i++){
             char c = xString.charAt(i);
             //if the number is negative, all ints in the array should be negative
             //in order for subtraction to properly work

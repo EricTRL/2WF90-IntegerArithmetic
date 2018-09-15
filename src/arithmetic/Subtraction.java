@@ -19,13 +19,9 @@ import java.util.LinkedList;
  */
 public class Subtraction {
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>();
-        a.add(2); a.add(8);
-        LinkedList<Integer> b = new LinkedList<>();
-        b.add(-5);
-        for(Integer x : subtract(a, b, 10, null)) {
-            System.out.print(x);
-        }
+        LinkedList<Integer> a = new LinkedList<>(Computation.convertStringToIntLinkedList("10"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.convertStringToIntLinkedList("-100"));
+        System.out.println(subtract(a, b, 10, null));
     }
     /**
      * subtraction of two large integers x and y
@@ -34,12 +30,11 @@ public class Subtraction {
      * @param y array containing the words of large integer y
      * @param b radix to be used
      * @param computation Computation to increment [count-mul] and [count-add] of (or null if we don't care)
-     * @pre x.length==y.length
      * @post x - y radix b
      */
     public static LinkedList<Integer> subtract(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {
         Arithmetic.makeLengthsEqual(x, y);
-        if (lessThan(x, y)) { // x < y
+        if (Arithmetic.isLessThan(x, y)) { // x < y
             LinkedList<Integer> answer = subtract(y, x, b, computation);
             Arithmetic.negative(answer);
             return answer;
@@ -65,26 +60,4 @@ public class Subtraction {
         }
         return answer;
     }
-
-    /**
-     * Method that compares x and y and outputs true if x < y
-     * @param x
-     * @param y
-     * @pre x.length == y.length
-     * @return x < y
-     */
-    public static boolean lessThan(LinkedList<Integer> x, LinkedList<Integer> y) {
-        Iterator<Integer> xIt = x.descendingIterator(); Iterator<Integer> yIt = y.descendingIterator();
-        while (xIt.hasNext() && yIt.hasNext()) {
-            if (xIt.next()>yIt.next()) {
-                return false; //x>y
-            } else if (yIt.next()>xIt.next()) {
-                return true; //x<y
-            }
-        }
-        return false; //x==y, thus we output false
-    }
-
-
-
 }
