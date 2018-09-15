@@ -33,7 +33,7 @@ public class Arithmetic {
             answer.set(i, Math.abs(answer.get(i))*-1);
         }
     }
-    public static void equal(LinkedList<Integer> x, LinkedList<Integer> y) {
+    public static void makeLengthsEqual(LinkedList<Integer> x, LinkedList<Integer> y) {
         if (x.size()<y.size()) {
             int sizeDiff = y.size()-x.size();
             for (int i = 0; i < sizeDiff; i++) {

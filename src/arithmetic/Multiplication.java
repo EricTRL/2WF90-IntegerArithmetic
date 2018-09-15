@@ -18,11 +18,9 @@ import java.util.Arrays;
  */
 public class Multiplication {
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(2,5,0));
-        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(0,1,2));
-        for (int x : multiply(a, b, 10)) {
-            System.out.print(x+" ");
-        }
+        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(6));
+        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(8));
+        System.out.println(multiply(a, b, 10, null));
     }
     /**
      * Multiply large numbers in radix b
@@ -30,10 +28,11 @@ public class Multiplication {
      * @param x array with first number
      * @param y array with second number
      * @param b radix to be used
+     * @param computation Computation to increment [count-mul] and [count-add] of (or null if we don't care)
      * @pre x.length==y.length
      * @return x*y in radix b
      */
-    public static LinkedList<Integer> multiply (LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+    public static LinkedList<Integer> multiply (LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {
         int carry = 0; //optional carry we need to add.
         int zerosAdded = 0; //amount of zeros added at the end (increases by one every iteration of i)
         int carryPlacementCount = 0; // place where carry has to be added
@@ -80,7 +79,7 @@ public class Multiplication {
             */
             System.out.println("current total answer: " + answer);
             System.out.println("current answerToAdd: " + answerToAdd);
-            answer = Addition.add(answer, answerToAdd, b); //add current result to total result
+            answer = Addition.add(answer, answerToAdd, b, computation); //add current result to total result
             answerToAdd = new LinkedList<>(); //reset answerToAdd array
             
             System.out.println("total answer after addition: " + answer);

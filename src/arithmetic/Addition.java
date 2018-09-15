@@ -27,7 +27,7 @@ public class Addition {
     public static void main(String[] args) {
         LinkedList<Integer> a = new LinkedList<>(Arrays.asList(1,0,0,0,0,0));
         LinkedList<Integer> b = new LinkedList<>(Arrays.asList(5,0,0,0));
-        for(Integer x : add(a, b, 10)) {
+        for(Integer x : add(a, b, 10, null)) {
             System.out.print(x);
         }
     }
@@ -37,11 +37,13 @@ public class Addition {
      * @param x array with first number
      * @param y array with second number
      * @param b radix to be used
+     * @param computation Computation to increment [count-mul] and [count-add] of (or null if we don't care)
+     * 
      * @pre x.length==y.length
      * @return x + y in radix b
      */
-    public static LinkedList<Integer> add (LinkedList<Integer> x, LinkedList<Integer> y, int b) {
-        Arithmetic.equal(x, y);
+    public static LinkedList<Integer> add (LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {
+        Arithmetic.makeLengthsEqual(x, y);
         int carry = 0; //optional carry we need to add.
         LinkedList<Integer> answer = new LinkedList<>();
         Iterator<Integer> it1 = x.descendingIterator(); Iterator<Integer> it2 = y.descendingIterator();

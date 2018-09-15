@@ -23,7 +23,7 @@ public class Subtraction {
         a.add(2); a.add(8);
         LinkedList<Integer> b = new LinkedList<>();
         b.add(-5);
-        for(Integer x : subtract(a, b, 10)) {
+        for(Integer x : subtract(a, b, 10, null)) {
             System.out.print(x);
         }
     }
@@ -33,13 +33,14 @@ public class Subtraction {
      * @param x array containing the words of a large integer x
      * @param y array containing the words of large integer y
      * @param b radix to be used
+     * @param computation Computation to increment [count-mul] and [count-add] of (or null if we don't care)
      * @pre x.length==y.length
      * @post x - y radix b
      */
-    public static LinkedList<Integer> subtract(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
-        Arithmetic.equal(x, y);
+    public static LinkedList<Integer> subtract(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {
+        Arithmetic.makeLengthsEqual(x, y);
         if (lessThan(x, y)) { // x < y
-            LinkedList<Integer> answer = subtract(y, x, b);
+            LinkedList<Integer> answer = subtract(y, x, b, computation);
             Arithmetic.negative(answer);
             return answer;
         }
