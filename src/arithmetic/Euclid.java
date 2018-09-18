@@ -2,6 +2,8 @@ package arithmetic;
 import java.util.LinkedList;
 import java.util.Arrays;
 import static arithmetic.Subtraction.subtract;
+import static arithmetic.Addition.add;
+import static arithmetic.Multiplication.multiply;
 
 
 /**
@@ -13,11 +15,12 @@ import static arithmetic.Subtraction.subtract;
  *
  * @since 6 SEPTEMBER 2018
  */
+
+//GreaterOrEqual doesnt work
 public class Euclid {
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(1,2));
-        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(2,3));
-        
+        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(2,1));
+        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(0,5));
         for (int x : euclid(a, b, 10)) {
             System.out.print(x);
         }
@@ -25,25 +28,57 @@ public class Euclid {
     public static int[] euclid(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
         LinkedList<Integer> a1 = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> a2 = new LinkedList<>(Arrays.asList(0));
+        LinkedList<Integer> a3 = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> b1 = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> b2 = new LinkedList<>(Arrays.asList(1));
+        LinkedList<Integer> b3 = new LinkedList<>(Arrays.asList(0));
         
-        if(!isGreaterThan(x,y)){
+        if(!isGreaterOrEqual(x,y)){
             LinkedList<Integer> dummy = (LinkedList) x.clone();
             x = (LinkedList) y.clone();
             y = (LinkedList) dummy.clone();
         }
+        LinkedList<Integer> r = new LinkedList<>();
+        LinkedList<Integer> q = new LinkedList<>();
         
         while(checkNotZero(y)){
-            
+            q = divide(x,y,b);
+            //Reduce
+            r = subtract(x,multiply(q,y,b,null),b,null);
+            a3 = subtract(a1,multiply(q,a2,b,null),b,null);
+            b3 = subtract(b1,multiply(q,b2,b,null),b,null);
+            //Swap
+            x = y;
+            y = r;
+            a1 = a2;
+            a2 = a3;
+            b1 = b2;
+            b2 = b3;
+//            System.out.println("X");
+//            for(int i =0;i <x.size();i++){
+//                System.out.print(x.get(i));
+//            }
+//            System.out.println("");
+//
+//            System.out.println("Y");
+//            for(int i =0;i <y.size();i++){
+//                System.out.print(y.get(i));
+//            }
+//            System.out.println("");
+//            System.out.println("");
+//
+//            try{
+//                Thread.sleep(1000);
+//            }catch(Exception e){}
         }
         
         
         return null;
     }
     
-    public static boolean isGreaterThan(LinkedList<Integer> x, LinkedList<Integer> y){
-        for(int i = 0; i < x.size();i++){
+    public static boolean isGreaterOrEqual(LinkedList<Integer> x, LinkedList<Integer> y){
+        int size = Math.min(x.size(),y.size());
+        for(int i = 0; i < size;i++){
             if(x.get(i) > y.get(i)){
                 return true;
             }else if(y.get(i) > x.get(i)){
@@ -65,21 +100,26 @@ public class Euclid {
     
     //We can assume that x > y
     public static LinkedList<Integer> divide(LinkedList<Integer> x, LinkedList<Integer> y, int b){
-        int q = 0;
-        while( isGreaterThan(x,y)){
-            x = subtract(x,y,b);
-            q++;
+        LinkedList<Integer> counter = new LinkedList<>(Arrays.asList(0));
+        LinkedList<Integer> one = new LinkedList<>(Arrays.asList(1));
+        LinkedList<Integer> dummyX = x;
+        while( isGreaterOrEqual(dummyX,y)){
+            dummyX = subtract(dummyX,y,b,null);
+            counter = add(counter,one,b,null);
         }
-        LinkedList<Integer> power = new LinkedList<>(Arrays.asList(1));
-        LinkedList<Integer> radix = new LinkedList<>(Arrays.asList(b));
-        LinkedList<Integer> q_ = new LinkedList<>();
         
-        int counter = 0;
-        while(power.get(0) < q){
-            power.set(0,multiplicate(power,radix,b));
-            counter++;
+        System.out.println("Counter");
+        for(int i =0;i <counter.size();i++){
+            System.out.print(counter.get(i));
         }
-        q_.set(counter-1,)
+        System.out.println("");
+        System.out.println("");
+        
+        try{
+            Thread.sleep(1000);
+        }catch(Exception e){}
+        
+        return counter;
     }
     
 }
