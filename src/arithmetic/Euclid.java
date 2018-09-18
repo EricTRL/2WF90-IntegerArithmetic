@@ -53,30 +53,19 @@ public class Euclid {
             b1 = b2;
             b2 = b3;
         }
-        System.out.println("X");
-        for(int i = 0; i < x.size();i++){
-            System.out.print(x.get(i));
-        }
-        System.out.println("");
-        System.out.println("Y");
-        for(int i = 0; i < y.size();i++){
-            System.out.print(y.get(i));
-        }
-        System.out.println("");
-        System.out.println("A1");
-        for(int i = 0; i < a1.size();i++){
-            System.out.print(a1.get(i));
-        }
-        System.out.println("");
-        System.out.println("B1");
-        for(int i = 0; i < b1.size();i++){
-            System.out.print(b1.get(i));
-        }
-        System.out.println("");
         
+        System.out.println("");
+        System.out.println("---------RESULT----");
+        print("X", x);
+        print("Y", y);
+        print("a1", a1);
+        print("b1", b1);
+        System.out.println("-------------------");
+                
         return b1;
     }
     
+    // not used, since we have the arithmetic methods
     public static boolean isGreaterOrEqual(LinkedList<Integer> x, LinkedList<Integer> y){
         int size = Math.min(x.size(),y.size());
         for(int i = 0; i < size;i++){
@@ -103,13 +92,38 @@ public class Euclid {
     public static LinkedList<Integer> divide(LinkedList<Integer> x, LinkedList<Integer> y, int b){
         LinkedList<Integer> counter = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> one = new LinkedList<>(Arrays.asList(1));
-        LinkedList<Integer> dummyX = x;
 
-        while(!Arithmetic.isLessThan(dummyX, y)){ // dummyX >= y
-            dummyX = subtract(dummyX,y,b,null);
+        System.out.println("----------DIVIDE------------");
+        while(!Arithmetic.isLessThan(x, y)){ // dummyX >= y
+            x = subtract(x,y,b,null);
+            
+            print("current counter", counter);
             counter = add(one,counter,b,null);
-        }        
+            print("x", x);
+            print("y", y);
+            print("counter", counter);
+            System.out.println("--");
+            
+        }     
+        System.out.println("----------END DIVIDE------------");
         return counter;
+    }
+    
+    // print linked list as number
+    // eg: "list: 215643"
+    private static void print(String title, LinkedList<Integer> list) {
+        System.out.print(title + ": ");
+        for(int i =0;i <list.size();i++){
+            System.out.print(list.get(i));
+        }
+        System.out.println("");
+    }
+    
+    private static void sleep(int time) {
+        try{
+            Thread.sleep(time);
+        } catch(Exception e){
+        }
     }
     
 }
