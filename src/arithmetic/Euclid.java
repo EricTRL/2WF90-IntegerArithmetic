@@ -19,13 +19,11 @@ import static arithmetic.Multiplication.multiply;
 //GreaterOrEqual doesnt work
 public class Euclid {
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(2,1));
-        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(0,5));
-        for (int x : euclid(a, b, 10)) {
-            System.out.print(x);
-        }
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("100"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("20"));
+        System.out.println(euclid(a,b,10));
     }
-    public static int[] euclid(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+    public static LinkedList<Integer> euclid(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
         LinkedList<Integer> a1 = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> a2 = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> a3 = new LinkedList<>(Arrays.asList(0));
@@ -33,7 +31,6 @@ public class Euclid {
         LinkedList<Integer> b2 = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> b3 = new LinkedList<>(Arrays.asList(0));
         
-        //if(!isGreaterOrEqual(x,y)){
         if(Arithmetic.isLessThan(x,y)){
             LinkedList<Integer> dummy = (LinkedList) x.clone();
             x = (LinkedList) y.clone();
@@ -55,26 +52,29 @@ public class Euclid {
             a2 = a3;
             b1 = b2;
             b2 = b3;
-//            System.out.println("X");
-//            for(int i =0;i <x.size();i++){
-//                System.out.print(x.get(i));
-//            }
-//            System.out.println("");
-//
-//            System.out.println("Y");
-//            for(int i =0;i <y.size();i++){
-//                System.out.print(y.get(i));
-//            }
-//            System.out.println("");
-//            System.out.println("");
-//
-//            try{
-//                Thread.sleep(1000);
-//            }catch(Exception e){}
         }
+        System.out.println("X");
+        for(int i = 0; i < x.size();i++){
+            System.out.print(x.get(i));
+        }
+        System.out.println("");
+        System.out.println("Y");
+        for(int i = 0; i < y.size();i++){
+            System.out.print(y.get(i));
+        }
+        System.out.println("");
+        System.out.println("A1");
+        for(int i = 0; i < a1.size();i++){
+            System.out.print(a1.get(i));
+        }
+        System.out.println("");
+        System.out.println("B1");
+        for(int i = 0; i < b1.size();i++){
+            System.out.print(b1.get(i));
+        }
+        System.out.println("");
         
-        
-        return null;
+        return b1;
     }
     
     public static boolean isGreaterOrEqual(LinkedList<Integer> x, LinkedList<Integer> y){
@@ -105,23 +105,10 @@ public class Euclid {
         LinkedList<Integer> one = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> dummyX = x;
 
-        //while( isGreaterOrEqual(dummyX,y)){
-        while(!Arithmetic.isLessThan(dummyX, y)){ // or isGreaterThan?
+        while(!Arithmetic.isLessThan(dummyX, y)){ // dummyX >= y
             dummyX = subtract(dummyX,y,b,null);
-            counter = add(counter,one,b,null);
-        }
-        
-        System.out.println("Counter");
-        for(int i =0;i <counter.size();i++){
-            System.out.print(counter.get(i));
-        }
-        System.out.println("");
-        System.out.println("");
-        
-        try{
-            Thread.sleep(1000);
-        }catch(Exception e){}
-        
+            counter = add(one,counter,b,null);
+        }        
         return counter;
     }
     
