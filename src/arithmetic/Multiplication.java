@@ -49,7 +49,8 @@ public class Multiplication {
                 } else {
                     carry = 0;
                 }
-                computation.changeCountMultiply(1);
+                if (computation != null)
+                    computation.changeCountMultiply(1);
                 //carryPlacementCount = (x.size()*2)-(x.size()-j)-zerosAdded-2+arrayExtendedByAmount; //Keep track of where to place carry (only needed after j for-loop)
             }
             
