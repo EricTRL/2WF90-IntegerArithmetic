@@ -33,7 +33,8 @@ public class Euclid {
         LinkedList<Integer> b2 = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> b3 = new LinkedList<>(Arrays.asList(0));
         
-        if(!isGreaterOrEqual(x,y)){
+        //if(!isGreaterOrEqual(x,y)){
+        if(Arithmetic.isLessThan(x,y)){
             LinkedList<Integer> dummy = (LinkedList) x.clone();
             x = (LinkedList) y.clone();
             y = (LinkedList) dummy.clone();
@@ -103,7 +104,9 @@ public class Euclid {
         LinkedList<Integer> counter = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> one = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> dummyX = x;
-        while( isGreaterOrEqual(dummyX,y)){
+
+        //while( isGreaterOrEqual(dummyX,y)){
+        while(!Arithmetic.isLessThan(dummyX, y)){ // or isGreaterThan?
             dummyX = subtract(dummyX,y,b,null);
             counter = add(counter,one,b,null);
         }
