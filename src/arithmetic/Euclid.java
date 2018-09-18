@@ -19,8 +19,8 @@ import static arithmetic.Multiplication.multiply;
 //GreaterOrEqual doesnt work
 public class Euclid {
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("100"));
-        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("20"));
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("21"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("101"));
         System.out.println(euclid(a,b,10));
     }
     public static LinkedList<Integer> euclid(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
@@ -30,11 +30,14 @@ public class Euclid {
         LinkedList<Integer> b1 = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> b2 = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> b3 = new LinkedList<>(Arrays.asList(0));
+        //Set this boolean to true if X and Y get swapped, such that a1 and b1 are correct
+        Boolean switched = false;
         
         if(Arithmetic.isLessThan(x,y)){
             LinkedList<Integer> dummy = (LinkedList) x.clone();
             x = (LinkedList) y.clone();
             y = (LinkedList) dummy.clone();
+            switched = true;
         }
         LinkedList<Integer> r = new LinkedList<>();
         LinkedList<Integer> q = new LinkedList<>();
@@ -52,6 +55,12 @@ public class Euclid {
             a2 = a3;
             b1 = b2;
             b2 = b3;
+        }
+        //Switch a1 and b1
+        if(switched){
+            a2 = a1;
+            a1 = b1;
+            b1 = a2;
         }
         
         System.out.println("");
