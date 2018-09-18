@@ -15,7 +15,7 @@ import java.util.LinkedList;
 public class Subtraction {
     public static void main(String[] args) {
         LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("10"));
-        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("-100"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("20"));
         System.out.println(subtract(a, b, 10, null));
     }
     
@@ -45,6 +45,7 @@ public class Subtraction {
         Iterator<Integer> xIt = x.descendingIterator(); Iterator<Integer> yIt = y.descendingIterator();
         while (xIt.hasNext() && yIt.hasNext()) {
             answer.addFirst(xIt.next() - yIt.next() + carry);
+            if (computation != null) computation.changeCountAdd(1);
             if (answer.getFirst()<0) {
                 answer.set(0, answer.getFirst()+b);
                 carry = -1;

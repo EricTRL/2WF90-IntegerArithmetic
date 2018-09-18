@@ -50,7 +50,8 @@ public class Multiplication {
                 } else {
                     carry = 0;
                 }
-                carryPlacementCount = (x.size()*2)-(x.size()-j)-zerosAdded-2+arrayExtendedByAmount; //Keep track of where to place carry (only needed after j for-loop)
+                computation.changeCountMultiply(1);
+                //carryPlacementCount = (x.size()*2)-(x.size()-j)-zerosAdded-2+arrayExtendedByAmount; //Keep track of where to place carry (only needed after j for-loop)
             }
             
             //answerToAdd.set(carryPlacementCount, carry); //Place carry

@@ -23,8 +23,8 @@ import java.util.LinkedList;
  */
 public class Addition {
     public static void main(String[] args) {        
-        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("10"));
-        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("-100"));
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("-10"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("20"));
         System.out.println(add(a, b, 10, null));
     }
     
@@ -49,33 +49,40 @@ public class Addition {
      * @return x + y in radix b
      */
     public static LinkedList<Integer> add(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {        
-        Arithmetic.makeLengthsEqual(x, y);
-        //System.out.println(x);
-        //System.out.println(y);
+        Arithmetic.invert(y);
+        return Subtraction.subtract(x, y, b, computation);
         
-        int carry = 0; //optional carry we need to add.
+        /*
+        Arithmetic.makeLengthsEqual(x, y);
+        if (Arithmetic.isLessThan(Arithmetic.abs(x), Arithmetic.abs(y)) && Arithmetic.isNegative(y)) { // abs(x) < abs(y)
+            LinkedList<Integer> answer = add(y, x, b, computation);
+            
+            Arithmetic.negative(answer);
+            
+            return answer;
+        }
+        //Assumption x > y
+        int carry = 0;
         LinkedList<Integer> answer = new LinkedList<>();
-        Iterator<Integer> it1 = x.descendingIterator(); Iterator<Integer> it2 = y.descendingIterator();
-
-        while (it1.hasNext() && it2.hasNext()) {
-            int x_i = it1.next(); int y_i = it2.next();
-            answer.addFirst((x_i+y_i+carry)%b);
-
-            if (Math.abs(x_i+y_i+carry)>=b) {
-                carry = (x_i+y_i+carry)/b;
+        Iterator<Integer> xIt = x.descendingIterator(); Iterator<Integer> yIt = y.descendingIterator();
+        while (xIt.hasNext() && yIt.hasNext()) {
+            answer.addFirst(xIt.next() + yIt.next() + carry);
+            if (computation != null) computation.changeCountAdd(1);
+            if (answer.getFirst()<0) {
+                answer.set(0, answer.getFirst()+b);
+                carry = -1;
+            } else if (answer.getFirst()>=b) {
+                answer.set(0, answer.getFirst()%b);
+                carry = 1;
             } else {
                 carry = 0;
             }
         }
-        
-        //special case if the two highest bits provide a carry
-        if (carry > 0) {
+        if (carry>0) {
             answer.addFirst(carry);
         }
-        
-        if (answer.getFirst()<0) {
-            Arithmetic.negative(answer);
-        }
         return answer;
-    }
+*/
+    }    
+    
 }

@@ -31,7 +31,7 @@ public class Arithmetic {
         Computation c;
         while ((c = reader.getNextComputation()) != null) {
             switch (c.getType()) {
-                case "[add]": c.setAnswer(Addition.add(c)); break;
+                case "[add]":   c.setAnswer(Addition.add(c)); break;
                 case "[subtract]": c.setAnswer(Subtraction.subtract(c)); break;
                 case "[multiply]": c.setAnswer(Multiplication.multiply(c)); break;
                 case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
@@ -40,7 +40,7 @@ public class Arithmetic {
                 case "[euclid]": break;
                 default: System.err.println("Unexpected type found: " + c.getType()); break;
             }
-
+            System.out.println(c.getAnswer()); System.out.println(c.getAnswerAsString());
             computations.add(c);
         }
         //OutputWriter.writeOutput(computations);
@@ -52,6 +52,13 @@ public class Arithmetic {
             answer.set(i, Math.abs(answer.get(i))*-1);
         }
     }
+    
+    public static void invert(LinkedList<Integer> x) {
+        for (int i = 0; i < x.size(); i++) {
+            x.set(i, x.get(i)*-1);
+        }
+    }
+    
     public static void makeLengthsEqual(LinkedList<Integer> x, LinkedList<Integer> y) {
         if (x.size()<y.size()) {
             int sizeDiff = y.size()-x.size();
@@ -96,6 +103,14 @@ public class Arithmetic {
             }
         }
         return false; //x==y, thus we output false
+    }
+    
+    public static LinkedList<Integer> abs(LinkedList<Integer> x) {
+        LinkedList<Integer> absX = new LinkedList<Integer>();
+        for (int i_x : x) {
+            absX.addLast(Math.abs(i_x));
+        }
+        return absX;
     }
     
     /**
