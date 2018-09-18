@@ -5,7 +5,6 @@
  */
 package arithmetic;
 
-import static arithmetic.Multiplication.multiply;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -23,12 +22,12 @@ import java.util.LinkedList;
 public class Modulo {
     public static void main(String[] args) {
         LinkedList<Integer> a = new LinkedList<>(Arrays.asList(6));
-        LinkedList<Integer> b = new LinkedList<>(Arrays.asList(8));
-        System.out.println(multiply(a, b, 10, null));
+        LinkedList<Integer> m = new LinkedList<>(Arrays.asList(2));
+        System.out.println(modulo(a, m, 10));
     }
     
     public static LinkedList<Integer> modulo(Computation c) {
-        return multiply(c.getX(), c.getY(), c.getRadix(), c);
+        return modulo(c.getX(), c.getM(), c.getRadix());
     }
     /**
      * Multiply large numbers in radix b
@@ -40,40 +39,8 @@ public class Modulo {
      * @pre x.length==y.length
      * @return x*y in radix b
      */
-    public static LinkedList<Integer> multiply (LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {
-        Arithmetic.makeLengthsEqual(x, y);
-        int carry = 0; //optional carry we need to add.
-        int zerosAdded = 0; //amount of zeros added at the end (increases by one every iteration of i)
-        LinkedList<Integer> answer = new LinkedList<>(Arrays.asList(0));
-        LinkedList<Integer> answerToAdd = new LinkedList<>();
-        //equal(x,y); //Make the numbers of the same size by adding 0's to the smaller number
-        for (int i = y.size(); i > 0; i--) {
-            for (int j = x.size(); j > 0; j--) {
-                //answerToAdd.set((x.size()*2)-(x.size()-j)-zerosAdded-1+arrayExtendedByAmount, (x.get(j-1)*y.get(i-1) + carry)%b); //compute new value
-                answerToAdd.addFirst((x.get(j-1)*y.get(i-1) + carry)%b); // insert result of multiplication at beginning of list
-                //compute carry
-                if (Math.abs(x.get(j-1)*y.get(i-1)+carry)>=b) {
-                    carry = (x.get(j-1)*y.get(i-1)+carry)/b;
-                } else {
-                    carry = 0;
-                }
-                if (computation != null)
-                    computation.changeCountMultiply(1);
-                //carryPlacementCount = (x.size()*2)-(x.size()-j)-zerosAdded-2+arrayExtendedByAmount; //Keep track of where to place carry (only needed after j for-loop)
-            }
-            
-            //answerToAdd.set(carryPlacementCount, carry); //Place carry
-            if (carry != 0) {
-                answerToAdd.addFirst(carry);
-            }
-            carry = 0; //reset carry
-            for (int z = zerosAdded; z > 0; z--) {
-                answerToAdd.addLast(0);
-            }
-            zerosAdded++; //Increase zerosAdded counter for next iteration
-
-            answer = Addition.add(answer, answerToAdd, b, computation); //add current result to total result
-            answerToAdd = new LinkedList<>(); //reset answerToAdd array
+    public static LinkedList<Integer> modulo (LinkedList<Integer> x, LinkedList<Integer> m, int b) {
+        for (int i = x.size(); i > 0; i--) {
             
         }
         Arithmetic.removeLeadingZeros(answer);
