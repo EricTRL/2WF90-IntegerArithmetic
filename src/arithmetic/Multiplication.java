@@ -33,10 +33,9 @@ public class Multiplication {
      * @return x*y in radix b
      */
     public static LinkedList<Integer> multiply (LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {
+        Arithmetic.makeLengthsEqual(x, y);
         int carry = 0; //optional carry we need to add.
         int zerosAdded = 0; //amount of zeros added at the end (increases by one every iteration of i)
-        int carryPlacementCount = 0; // place where carry has to be added
-        int arrayExtendedByAmount = 0; // to compensate for a longer array cause of addition implementation
         LinkedList<Integer> answer = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> answerToAdd = new LinkedList<>();
         //equal(x,y); //Make the numbers of the same size by adding 0's to the smaller number
@@ -63,35 +62,12 @@ public class Multiplication {
                 answerToAdd.addLast(0);
             }
             zerosAdded++; //Increase zerosAdded counter for next iteration
-            
-            // Increase size of answerToAdd if Addition.add increased the size of the answer array
-            /*
-            if (answer.length>answerToAdd.length) {
-                int[] backupAnswerToAdd = new int[answerToAdd.length];
-                for (int a = 0; a < answerToAdd.length; a++) {
-                    backupAnswerToAdd[a] = answerToAdd[a];
-                }
-                answerToAdd = new int[answer.length];
-                for (int a = 0; a < backupAnswerToAdd.length; a++) {
-                    answerToAdd[a+1] = backupAnswerToAdd[a];
-                }
-                arrayExtendedByAmount++; //increase array extension counter
-            }
-            */
-            
-            /*
-            System.out.println("current total answer: " + answer);
-            System.out.println("current answerToAdd: " + answerToAdd);
-            */
 
             answer = Addition.add(answer, answerToAdd, b, computation); //add current result to total result
             answerToAdd = new LinkedList<>(); //reset answerToAdd array
             
-            /*
-            System.out.println("total answer after addition: " + answer);
-            System.out.println();
-            */
         }
+        Arithmetic.removeLeadingZeros(answer);
         return answer;
     }
     

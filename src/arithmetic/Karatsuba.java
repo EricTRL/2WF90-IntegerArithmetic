@@ -123,6 +123,8 @@ public class Karatsuba {
         }
         
         //return xHiyHi + xHiyLo_plus_xLoyHi + xLoyLo
-        return add(add(xHiyHi, xHiyLo_plus_xLoyHi, b, computation), xLoyLo, b, computation);
+        LinkedList<Integer> answer = add(add(xHiyHi, xHiyLo_plus_xLoyHi, b, computation), xLoyLo, b, computation);
+        Arithmetic.removeLeadingZeros(answer);
+        return answer;
     }
 }

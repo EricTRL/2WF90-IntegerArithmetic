@@ -59,6 +59,7 @@ public class Subtraction {
         if (carry>0) {
             answer.addFirst(carry);
         }
+        Arithmetic.removeLeadingZeros(answer);
         return answer;
     }
 }
