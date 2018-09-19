@@ -18,12 +18,17 @@ import static arithmetic.Multiplication.multiply;
 
 //GreaterOrEqual doesnt work
 public class Euclid {
+    
     public static void main(String[] args) {
         LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("21"));
         LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("101"));
-        System.out.println(euclid(a,b,10));
+        euclid(a,b,10).print();
     }
-    public static LinkedList<Integer> euclid(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+    
+    public static EuclidResult euclid(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+        LinkedList<Integer> inputX = (LinkedList) x.clone();
+        LinkedList<Integer> inputY = (LinkedList) y.clone();
+        
         LinkedList<Integer> a1 = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> a2 = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> a3 = new LinkedList<>(Arrays.asList(0));
@@ -71,7 +76,9 @@ public class Euclid {
         print("b1", b1);
         System.out.println("-------------------");
                 
-        return b1;
+        EuclidResult result = new EuclidResult(b, inputX, inputY, x, a1, b1);
+        
+        return result;
     }
     
     // not used, since we have the arithmetic methods
@@ -120,7 +127,7 @@ public class Euclid {
     
     // print linked list as number
     // eg: "list: 215643"
-    private static void print(String title, LinkedList<Integer> list) {
+    public static void print(String title, LinkedList<Integer> list) {
         System.out.print(title + ": ");
         for(int i =0;i <list.size();i++){
             System.out.print(list.get(i));
