@@ -93,4 +93,23 @@ public class Modulo {
         LinkedList<Integer> z = Karatsuba.karatsuba(x, y, b, null, 1);
         return modulo(z, m, b);
     }
+
+    /**
+     * Modular inversion of number x
+     * @param x number
+     * @param m modulo
+     * @param b base
+     * @return x^{-1}
+     */
+    public static LinkedList<Integer> modularInversion (LinkedList<Integer> x, LinkedList<Integer> m, int b) {
+        LinkedList<Integer> x_prime = x; LinkedList<Integer> m_prime = m;
+        int x_1 = 1; int x_2 = 0;
+        while (Arithmetic.isPositive(m_prime)) {
+            LinkedList<Integer> q = Division.divide(x_prime, m_prime, b, null).q;
+            LinkedList<Integer> r = Subtraction.subtract(x_prime, Karatsuba.karatsuba(q, m_prime, b, null, 1), b, null);
+            x_prime = m_prime; m_prime = r;
+
+        }
+        return x_prime;
+    }
 }
