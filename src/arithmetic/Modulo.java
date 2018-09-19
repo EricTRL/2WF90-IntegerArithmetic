@@ -5,6 +5,8 @@
  */
 package arithmetic;
 
+import com.sun.org.apache.xpath.internal.operations.Div;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -21,8 +23,8 @@ import java.util.LinkedList;
  */
 public class Modulo {
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Arrays.asList(6));
-        LinkedList<Integer> m = new LinkedList<>(Arrays.asList(2));
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("138"));
+        LinkedList<Integer> m = new LinkedList<>(Computation.stringToList("47"));
         System.out.println(modulo(a, m, 10));
     }
     
@@ -38,10 +40,7 @@ public class Modulo {
      * @return x (mod m)
      */
     public static LinkedList<Integer> modulo (LinkedList<Integer> x, LinkedList<Integer> m, int b) {
-        for (int i = x.size(); i > 0; i--) {
-            
-        }
-        return null;
+        return Division.dumbDivide(x, m, b, null).r;
     }
 
     /**
