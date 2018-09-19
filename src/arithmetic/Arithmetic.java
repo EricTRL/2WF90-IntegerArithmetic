@@ -37,7 +37,7 @@ public class Arithmetic {
                 //case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
                 case "[reduce]": break;
                 case "[inverse]": break;
-                case "[euclid]": break;
+                case "[euclid]": c.setAnswer(Euclid.euclid(c)); break;
                 default: System.err.println("Unexpected type found: " + c.getType()); break;
             }
             System.out.println(c.getAnswer()); System.out.println(c.getAnswerAsString());
