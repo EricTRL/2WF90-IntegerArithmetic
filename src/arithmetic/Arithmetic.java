@@ -34,7 +34,7 @@ public class Arithmetic {
                 case "[add]":   c.setAnswer(Addition.add(c)); break;
                 case "[subtract]": c.setAnswer(Subtraction.subtract(c)); break;
                 case "[multiply]": c.setAnswer(Multiplication.multiply(c)); break;
-                case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
+                //case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
                 case "[reduce]": break;
                 case "[inverse]": break;
                 case "[euclid]": break;
@@ -159,6 +159,14 @@ public class Arithmetic {
             }
         }
         return false; //x <= 0
+    }
+
+    public static class QuoRem {
+        public LinkedList<Integer> q;
+        public LinkedList<Integer> r;
+        public QuoRem(LinkedList<Integer> q, LinkedList<Integer> r) {
+            this.q = q; this.r = r;
+        }
     }
     
     
