@@ -17,22 +17,22 @@ public class EuclidResult {
 
     private LinkedList<Integer> inputX; 
     private LinkedList<Integer> inputY; 
-    private LinkedList<Integer> answD; 
     private LinkedList<Integer> answA; 
     private LinkedList<Integer> answB; 
+    private LinkedList<Integer> answD; 
     
     public EuclidResult(int radix, 
                         LinkedList<Integer> inputX, 
                         LinkedList<Integer> inputY, 
-                        LinkedList<Integer> answD, 
                         LinkedList<Integer> answA, 
-                        LinkedList<Integer> answB) {
+                        LinkedList<Integer> answB, 
+                        LinkedList<Integer> answD) {
         this.radix = radix;
         this.inputX = inputX;
         this.inputY = inputY;
-        this.answD = answD;
         this.answA = answA;
-        this.answB = answB;  
+        this.answB = answB;
+        this.answD = answD;  
     }
     
     public int getRadix() {
@@ -47,10 +47,6 @@ public class EuclidResult {
         return inputY;
     }
 
-    public LinkedList<Integer> getAnswD() {
-        return answD;
-    }
-
     public LinkedList<Integer> getAnswA() {
         return answA;
     }
@@ -58,13 +54,17 @@ public class EuclidResult {
     public LinkedList<Integer> getAnswB() {
         return answB;
     }
+
+    public LinkedList<Integer> getAnswD() {
+        return answD;
+    }
     
     // print the result
     public void print() {
         Euclid.print("[x]", inputX);
         Euclid.print("[y]", inputY);
-        Euclid.print("[answ-d]", answD);
         Euclid.print("[answ-a]", answA);
         Euclid.print("[answ-b]", answB);
+        Euclid.print("[answ-d]", answD);
     }
 }
