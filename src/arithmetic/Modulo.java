@@ -29,21 +29,68 @@ public class Modulo {
     public static LinkedList<Integer> modulo(Computation c) {
         return modulo(c.getX(), c.getM(), c.getRadix());
     }
+
     /**
-     * Multiply large numbers in radix b
-     *
-     * @param x array with first number
-     * @param y array with second number
-     * @param b radix to be used
-     * @param computation Computation to increment [count-mul] and [count-add] of (or null if we don't care)
-     * @pre x.length==y.length
-     * @return x*y in radix b
+     * Function that returns x (mod m)
+     * @param x number to be reduced
+     * @param m modulo
+     * @param b base
+     * @return x (mod m)
      */
     public static LinkedList<Integer> modulo (LinkedList<Integer> x, LinkedList<Integer> m, int b) {
         for (int i = x.size(); i > 0; i--) {
             
         }
-        Arithmetic.removeLeadingZeros(answer);
-        return answer;
+        return null;
+    }
+
+    /**
+     * Modular addition of numbers x,y
+     * @param x number x
+     * @param y number y
+     * @param b base
+     * @param m the modulo
+     * @return x+y (mod m)
+     */
+    public static LinkedList<Integer> addModulo (LinkedList<Integer> x, LinkedList<Integer> y, int b, LinkedList<Integer> m) {
+        x = modulo(x, m, b); y = modulo(y, m, b); //We reduce x and y
+        LinkedList<Integer> z = Addition.add(x, y, b, null);
+        if (Arithmetic.isLessThan(z,m)) {
+            return z;
+        } else {
+            return Subtraction.subtract(z,m,b, null);
+        }
+    }
+
+    /**
+     * Modular subtraction of x - y
+     * @param x number x
+     * @param y number y
+     * @param m modulus
+     * @param b base
+     * @return x-y (mod m)
+     */
+    public static LinkedList<Integer> subtractModulo (LinkedList<Integer> x, LinkedList<Integer> y, LinkedList<Integer>m, int b) {
+        x = modulo(x, m, b); y = modulo(y, m ,b); //Reduce x and y
+        LinkedList<Integer> z = Subtraction.subtract(x, y, b, null);
+        if (Arithmetic.isPositive(z)) {
+            return z;
+        } else {
+            return Addition.add(x, m, b, null);
+        }
+    }
+
+    /**
+     * Naive Modular multiplication
+     * @param x number x
+     * @param y number y
+     * @param m modulo
+     * @param b base
+     * @return (x*y)(mod m)
+     */
+    public static LinkedList<Integer> multiplyModulo (LinkedList<Integer> x, LinkedList<Integer> y, LinkedList<Integer> m, int b) {
+        x = modulo(x, m, b); y = modulo(y, m, b); //Reduce x and y
+        LinkedList<Integer> z = Karatsuba.karatsuba(x, y, b, null, 1);
+        return modulo(z, m, b);
     }
 }

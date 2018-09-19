@@ -16,7 +16,11 @@ import static arithmetic.Subtraction.subtract;
  * @since 6 SEPTEMBER 2018
  */
 public class Karatsuba {    
-    
+    public static void main(String[] args) {
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("10"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("50"));
+        System.out.println(karatsuba(a, b, 10, null, 2));
+    }
     public static LinkedList<Integer> karatsuba(Computation c) {
         return karatsuba(c.getX(), c.getY(), c.getRadix(), c, 1);
     }

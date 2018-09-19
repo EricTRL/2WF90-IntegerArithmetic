@@ -15,8 +15,8 @@ import java.util.LinkedList;
  */
 public class Addition {
     public static void main(String[] args) {        
-        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("-10"));
-        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("20"));
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("10"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("-100"));
         System.out.println(add(a, b, 10, null));
     }
     
