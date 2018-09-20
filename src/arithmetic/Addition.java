@@ -1,5 +1,6 @@
 package arithmetic;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -36,13 +37,27 @@ public class Addition {
      * @param y array with second number
      * @param b radix to be used
      * @param computation Computation to increment [count-mul] and [count-add] of (or null if we don't care)
-     * 
-     * @pre x.length==y.length
      * @return x + y in radix b
      */
     public static LinkedList<Integer> add(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {        
-        Arithmetic.invert(y);
-        return Subtraction.subtract(x, y, b, computation);
+        Arithmetic.makeLengthsEqual(x, y);
+        if (Arithmetic.isNegative(x)) {
+            return Subtraction.subtract(y, Arithmetic.abs(x), b, null);
+        } else if (Arithmetic.isNegative(y)) {
+            return Subtraction.subtract(x, Arithmetic.abs(y), b, null);
+        }
+        /* Here both x and y are positive */
+        LinkedList<Integer> answer = new LinkedList<>();
+        Iterator<Integer> it_x = x.iterator(); Iterator<Integer> it_y = y.iterator();
+        int carry = 0;
+        while (it_x.hasNext() && it_y.hasNext()) {
+            int a = it_x.next(); int c = it_y.next();
+            answer.addFirst((a+c+carry)%b);
+            if (a+c+carry>=b) carry = 1;
+            else carry = 0;
+        }
+        if (carry > 0) answer.addFirst(carry);
+        return answer;
     }    
     
 }

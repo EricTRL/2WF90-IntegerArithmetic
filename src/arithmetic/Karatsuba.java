@@ -92,7 +92,7 @@ public class Karatsuba {
         //do the calculations
         if (size/2 <= Math.max(minBits, 1)) {
             //end the recursion; apply primary school calculation
-            System.out.println("\t primary school ("+ size/2 +")");
+            //System.out.println("\t primary school ("+ size/2 +")");
             
             //xHiyHi = xHi*yHi
             xHiyHi = multiply(xHi, yHi, b, computation);
@@ -102,7 +102,7 @@ public class Karatsuba {
             orderMult = multiply(add(xHi, xLo, b, computation), add(yHi, yLo, b, computation), b, computation);
         } else {
             //continue the recursion; apply karatsuba (again)
-            System.out.println("\t karatsuba ("+size/2+")");
+            //System.out.println("\t karatsuba ("+size/2+")");
             
             //xHiyHi = xHi*yHi
             xHiyHi = karatsuba(xHi, yHi, b, computation, minBits);

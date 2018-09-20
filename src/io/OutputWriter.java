@@ -39,7 +39,7 @@ public class OutputWriter {
         //type
         map.put("y", new ArrayList<>(Arrays.asList("[add]", "[subtract]", "[multiply]", "[karatsuba]", "[euclid]")));
         map.put("m", new ArrayList<>(Arrays.asList("[add]", "[subtract]", "[multiply]", "[karatsuba]", "[euclid]", "[reduce]", "[inverse]")));
-        //answer
+        map.put("answer", new ArrayList<>(Arrays.asList("[add]", "[subtract]", "[multiply]", "[karatsuba]", "[reduce]", "[inverse]")));
         map.put("count-add", new ArrayList<>(Arrays.asList("[multiply]", "[karatsuba]")));
         map.put("count-mul", new ArrayList<>(Arrays.asList("[multiply]", "[karatsuba]")));
         map.put("answ-d", new ArrayList<>(Arrays.asList("[euclid]")));
@@ -88,12 +88,10 @@ public class OutputWriter {
     }
     
     private static void writeOutput(BufferedWriter fileWriter, Computation computation) throws IOException {
-        fileWriter.write("[radix] " + computation.getRadix());
-        fileWriter.newLine();
+        fileWriter.write("[radix] " + computation.getRadix()); fileWriter.newLine();
         
         String type = computation.getType();
-        fileWriter.write(type);
-        fileWriter.newLine();
+        fileWriter.write(type); fileWriter.newLine();
         fileWriter.write("[x] " + computation.getXAsString()); fileWriter.newLine();
         
         if (OUTPUT_FOR_CALCULATION.get("y").contains(type)) {
@@ -102,9 +100,9 @@ public class OutputWriter {
         if (OUTPUT_FOR_CALCULATION.get("m").contains(type) && !computation.getM().isEmpty()) {
             fileWriter.write("[m] " + computation.getMAsString()); fileWriter.newLine();
         }
-        
-        fileWriter.write("[answer] " + computation.getAnswerAsString()); fileWriter.newLine();
-        
+        if (OUTPUT_FOR_CALCULATION.get("answer").contains(type)) {
+            fileWriter.write("[answer] " + computation.getAnswerAsString()); fileWriter.newLine();
+        }        
         if (OUTPUT_FOR_CALCULATION.get("count-add").contains(type)) {
             fileWriter.write("[count-add] " + computation.getCountAdd()); fileWriter.newLine();
         }

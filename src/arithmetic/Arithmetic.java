@@ -36,7 +36,7 @@ public class Arithmetic {
                 case "[multiply]": c.setAnswer(Multiplication.multiply(c)); break;
                 case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
                 case "[reduce]": break;
-                case "[inverse]": break;
+                case "[inverse]": c.setAnswer(Modulo.modularInversion(c)); break;
                 case "[euclid]": c.setAnswer(Euclid.euclid(c)); break;
                 default: System.err.println("Unexpected type found: " + c.getType()); break;
             }
