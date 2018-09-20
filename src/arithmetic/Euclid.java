@@ -1,6 +1,7 @@
 package arithmetic;
 import java.util.LinkedList;
 import java.util.Arrays;
+import static arithmetic.Arithmetic.removeLeadingZeros;
 import static arithmetic.Subtraction.subtract;
 import static arithmetic.Addition.add;
 import static arithmetic.Multiplication.multiply;
@@ -79,8 +80,10 @@ public class Euclid {
         print("a1", a1);
         print("b1", b1);
         System.out.println("-------------------");
-                
-        EuclidResult result = new EuclidResult(b, inputX, inputY, x, a1, b1);
+        removeLeadingZeros(x);
+        removeLeadingZeros(a1);
+        removeLeadingZeros(b1);
+        EuclidResult result = new EuclidResult(b, inputX, inputY, a1, b1, x);
         result.print();
         
         // set answers in computation instance

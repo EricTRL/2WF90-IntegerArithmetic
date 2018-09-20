@@ -34,7 +34,7 @@ public class Arithmetic {
                 case "[add]":   c.setAnswer(Addition.add(c)); break;
                 case "[subtract]": c.setAnswer(Subtraction.subtract(c)); break;
                 case "[multiply]": c.setAnswer(Multiplication.multiply(c)); break;
-                //case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
+                case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
                 case "[reduce]": break;
                 case "[inverse]": break;
                 case "[euclid]": c.setAnswer(Euclid.euclid(c)); break;
