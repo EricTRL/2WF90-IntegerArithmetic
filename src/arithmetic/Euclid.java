@@ -21,9 +21,9 @@ import static arithmetic.Multiplication.multiply;
 public class Euclid {
     
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("21"));
-        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("101"));
-        euclid(a,b,10,null);
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("5896363941d32eccd5c"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("c7eb8a91fbad0d1c1f03"));
+        euclid(a,b,16,null);
     }
     
     public static LinkedList<Integer> euclid(Computation c) {
@@ -31,27 +31,32 @@ public class Euclid {
     }
     
     public static LinkedList<Integer> euclid(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation c) {
+        //Duplicate x and y
         LinkedList<Integer> inputX = (LinkedList) x.clone();
         LinkedList<Integer> inputY = (LinkedList) y.clone();
         
+        //Declare variables
         LinkedList<Integer> a1 = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> a2 = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> a3 = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> b1 = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> b2 = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> b3 = new LinkedList<>(Arrays.asList(0));
+        LinkedList<Integer> r = new LinkedList<>();
+        LinkedList<Integer> q = new LinkedList<>();
+        
         //Set this boolean to true if X and Y get swapped, such that a1 and b1 are correct
         Boolean switched = false;
         
+        //Make sure x > y
         if(Arithmetic.isLessThan(x,y)){
             LinkedList<Integer> dummy = (LinkedList) x.clone();
             x = (LinkedList) y.clone();
             y = (LinkedList) dummy.clone();
             switched = true;
         }
-        LinkedList<Integer> r = new LinkedList<>();
-        LinkedList<Integer> q = new LinkedList<>();
         
+        //Compute Euclids Algorithm
         while(checkNotZero(y)){
             q = divide(x,y,b);
             //Reduce
@@ -66,20 +71,15 @@ public class Euclid {
             b1 = b2;
             b2 = b3;
         }
-        //Switch a1 and b1
+        
+        //Check if x and y were switched
         if(switched){
             a2 = a1;
             a1 = b1;
             b1 = a2;
         }
         
-        System.out.println("");
-        System.out.println("---------RESULT----");
-        print("X", x);
-        print("Y", y);
-        print("a1", a1);
-        print("b1", b1);
-        System.out.println("-------------------");
+        //Remove leading zero's
         removeLeadingZeros(x);
         removeLeadingZeros(a1);
         removeLeadingZeros(b1);
@@ -97,20 +97,7 @@ public class Euclid {
         return result.getAnswD();
     }
     
-    // not used, since we have the arithmetic methods
-    public static boolean isGreaterOrEqual(LinkedList<Integer> x, LinkedList<Integer> y){
-        int size = Math.min(x.size(),y.size());
-        for(int i = 0; i < size;i++){
-            if(x.get(i) > y.get(i)){
-                return true;
-            }else if(y.get(i) > x.get(i)){
-                return false;
-            }
-        }
-        //If equal return true
-        return true;
-    }
-    
+    //Check if LinkedList is not zero
     public static boolean checkNotZero(LinkedList<Integer> y){
         for(int i =0 ; i < y.size();i++){
             if(y.get(i) != 0){
@@ -121,23 +108,17 @@ public class Euclid {
     }
     
     //We can assume that x > y
-    public static LinkedList<Integer> divide(LinkedList<Integer> x, LinkedList<Integer> y, int b){
+    //Basic division of 2 linked list, this returns the floor of x/y
+    public static LinkedList<Integer> divide(LinkedList<Integer> x_, LinkedList<Integer> y, int b){
+        //Declare variables
         LinkedList<Integer> counter = new LinkedList<>(Arrays.asList(0));
         LinkedList<Integer> one = new LinkedList<>(Arrays.asList(1));
 
-        System.out.println("----------DIVIDE------------");
-        while(!Arithmetic.isLessThan(x, y)){ // dummyX >= y
-            x = subtract(x,y,b,null);
-            
-            print("current counter", counter);
-            counter = add(one,counter,b,null);
-            print("x", x);
-            print("y", y);
-            print("counter", counter);
-            System.out.println("--");
-            
+        //Keeps subtracting while possible
+        while(!Arithmetic.isLessThan(x_, y)){ // dummyX >= y
+            x_ = subtract(x_,y,b,null); 
+            counter = add(one,counter,b,null);  
         }     
-        System.out.println("----------END DIVIDE------------");
         return counter;
     }
     
