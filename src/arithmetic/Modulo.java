@@ -1,13 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arithmetic;
 
-import com.sun.org.apache.xpath.internal.operations.Div;
-
-import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -93,6 +85,11 @@ public class Modulo {
         return modulo(z, m, b);
     }
 
+    
+    public static LinkedList<Integer> modularInversion(Computation c) {
+        return modularInversion(c.getX(), c.getM(), c.getRadix());
+    }
+    
     /**
      * Modular inversion of number x
      * @param x number
@@ -100,14 +97,13 @@ public class Modulo {
      * @param b base
      * @return x^{-1}
      */
-    public static LinkedList<Integer> modularInversion (LinkedList<Integer> x, LinkedList<Integer> m, int b) {
+    public static LinkedList<Integer> modularInversion(LinkedList<Integer> x, LinkedList<Integer> m, int b) {
         LinkedList<Integer> x_prime = x; LinkedList<Integer> m_prime = m;
         int x_1 = 1; int x_2 = 0;
         while (Arithmetic.isPositive(m_prime)) {
             LinkedList<Integer> q = Division.dumbDivide(x_prime, m_prime, b, null).q;
             LinkedList<Integer> r = Subtraction.subtract(x_prime, Karatsuba.karatsuba(q, m_prime, b, null, 1), b, null);
             x_prime = m_prime; m_prime = r;
-
         }
         return x_prime;
     }
