@@ -3,6 +3,8 @@ package arithmetic;
 import java.util.Iterator;
 import java.util.LinkedList;
 import arithmetic.Arithmetic;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Division {
     public static void main(String[] args) {
@@ -69,4 +71,101 @@ public class Division {
         }
         return new Arithmetic.QuoRem(q,r);
     }
+    
+    
+    public static Arithmetic.QuoRem verrySmartDivide(LinkedList<Integer> u, LinkedList<Integer> v, int b) {
+        //nonnegative u,v
+        //no leading zeros in v
+        //v != 0
+        Arithmetic.removeLeadingZeros(v);
+        Arithmetic.removeLeadingZeros(u);
+        
+        int m = u.size() - v.size();
+        int n = v.size();
+        
+        LinkedList<Integer> d;
+        
+        int iD = (b-1)/v.getFirst(); //integer division = floor
+        if (iD != 1) {
+            d = new LinkedList<>(Arrays.asList(iD));
+            v = Karatsuba.karatsuba(v, d, b, null, 1);
+            u = Karatsuba.karatsuba(u, d, b, null, 1);
+        } else {
+            u.addFirst(0);
+        }        
+        
+        //convert to arraylist
+        ArrayList<Integer> uArr = new ArrayList<>(u);
+        ArrayList<Integer> vArr = new ArrayList<>(v);
+        
+        for (int j = m; true; j++) {
+            //cacluate
+            int ujnB = u.get(j+n)*b;
+            
+            int ujn = v.get(j+n-1);
+            
+            int qHat = (ujnB + ujn)/v.get(n-1);
+            int rHat = (ujnB + ujn) % v.get(n-1);
+            
+            
+            while (rHat < b) {
+                if (qHat == b || qHat*v.get(n-2) > b*rHat + u.get(j+n-2)) {
+                    qHat--;
+                    rHat += v.get(n-1);
+                }
+            }
+            
+            LinkedList<Integer> result = new LinkedList<>();
+            for (int i = n; i >= 0; i--) {
+                result.add(u.get(i+j));
+            }
+            result = Subtraction.subtract(result, Karatsuba.karatsuba(v, new LinkedList<>(Arrays.asList(qHat)), b, null, 1), b, null);         
+            
+            boolean negative = Arithmetic.isNegative(result);
+            if (negative) {
+                //fix stuff
+                Addition.add(result, null /*b^n+1*/, b, null);
+            }
+            
+            for (int i = 0; i <= n; i++) {
+                u.set(i+j, result.get(i));
+            }
+            
+            int qj = qHat;
+            if (negative) {
+                qj--;
+                
+            }
+            
+            return null;
+        }
+        
+        //return null;
+    }
+    
+    public static Arithmetic.QuoRem verryVerrrySmartDivide(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+        int k = x.size();
+        int l = y.size();
+        
+        if (l > k) {
+            return new Arithmetic.QuoRem(new LinkedList<>(Arrays.asList(0)), x);
+        }
+        
+        //a, b must be positive
+        //k >= l
+        
+        //q has at most m = k-l+1 base-b digits
+        
+        LinkedList<Integer> q = new LinkedList<>();
+        LinkedList<Integer> r = new LinkedList<>(x);
+        r.addFirst(0);
+        
+        for(int i = k-l; i >= 0; i--) {
+            
+        }
+        
+        
+        return null;
+    }
+    
 }

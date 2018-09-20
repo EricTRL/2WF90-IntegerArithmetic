@@ -160,6 +160,17 @@ public class Arithmetic {
         }
         return false; //x <= 0
     }
+    
+    public static void shiftBits(LinkedList<Integer> x, int num) {
+        //handle shifting to the left
+        for (int i = 0; i < num; i++) {
+            x.addLast(0);
+        }
+        //handle shifting to the right
+        for (int i = 0; i < -num; i++) {
+            x.removeLast();
+        }
+    }
 
     public static class QuoRem {
         public LinkedList<Integer> q;
