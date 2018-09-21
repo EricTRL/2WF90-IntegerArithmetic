@@ -8,8 +8,8 @@ import java.util.Arrays;
 
 public class Division {
     public static void main(String[] args) {
-        LinkedList<Integer> x = new LinkedList<>(Computation.stringToList("856486231"));
-        LinkedList<Integer> y = new LinkedList<>(Computation.stringToList("65454"));
+        LinkedList<Integer> x = new LinkedList<>(Computation.stringToList("480"));
+        LinkedList<Integer> y = new LinkedList<>(Computation.stringToList("30"));
         System.out.println(dumbDivide(x,y,10,null).q + " " + dumbDivide(x,y,10,null).r);
         System.out.println("did one");
         System.out.println(verryVerrrySmartDivide(x,y,10,null).q + " " + verryVerrrySmartDivide(x,y,10,null).r);
@@ -148,8 +148,6 @@ public class Division {
     
     public static Arithmetic.QuoRem verryVerrrySmartDivide(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation c) {
         Arithmetic.removeLeadingZeros(x); Arithmetic.removeLeadingZeros(y);
-        System.out.println(x + " " + x.size());
-        System.out.println(y + " " + y.size());
         int k = x.size();
         int l = y.size();
         
@@ -163,54 +161,56 @@ public class Division {
         //q has at most m = k-l+1 base-b digits
         
         LinkedList<Integer> q = new LinkedList<>();
-        LinkedList<Integer> r = new LinkedList<>(x);
-        r.addFirst(0);
+        LinkedList<Integer> r = new LinkedList<>(x); //LINE 1 ALGO
+        r.addFirst(0); //LINE 2 ALGO
+        
         int carry;
         int tmp;
-        System.out.println("lets start outer loop, k.size = " + k + ", and l.size = " + l);
-        for(int i = k-l; i >= 0; i--) {
-            //System.out.println("in outer loop " + i);
-            //System.out.println("r.get(i+l): " + r.get(i+l) + ", b: " + b + ", r.get(i+l-1): " + r.get(i+l-1) + ", y.get(l-1): " + y.get(l-1));
-            int numberToAddInQ = (r.get(i+l)*b+r.get(i+l-1))/y.get(l-1);
-            System.out.println("NumberToAddInQ: " + numberToAddInQ);
-            if (numberToAddInQ >= b) {
-                numberToAddInQ = b-1;
+        
+        for(int i = k-l; i >= 0; i--) { //LINE 3 AlGO
+            int numberToAddInQ = (r.get(i+l)*b+r.get(i+l-1))/y.get(l-1); //LINE 4 ALGO. Breaks if y.get(l-1) is 0, in other words when the last digit of y is 0
+            if (numberToAddInQ >= b) { //LINE 5 ALGO
+                numberToAddInQ = b-1; //STILL LINE 5 ALGO
             }
-            q.addFirst(numberToAddInQ);
-            /*
-            carry = 0;
-            System.out.println(q + " " + numberToAddInQ);
-            for (int j = 0; j < l; j++) {
-                //System.out.println("r.get(i+j): " + r.get(i+j) + ", q.get(0): " + q.get(0) + ", y.get(j): " + y.get(j) + ", carry: " + carry);
-                tmp = r.get(i+j) - q.get(0)*y.get(j) + carry;
-                carry = tmp/b;
-                //System.out.println("end of first nested loop " + j + ", carry = " + carry + " and tmp = " + tmp);
-                r.set(i+j, tmp%b);
+            q.addFirst(numberToAddInQ); // Here, the result is actually put in q, as was suggested in LINE 4 ALGO
+            
+            carry = 0; //LINE 6 ALGO
+            
+            for (int j = 0; j < l; j++) { //LINE 7 ALGO
+                tmp = r.get(i+j) - q.get(0)*y.get(j) + carry; //LINE 8 ALGO
+                carry = tmp/b; //LINE 9 ALGO (QuoRem puts quotient in carry, remainder in r)
+                r.set(i+j, tmp%b); //STILL LINE 9 ALGO
             }
             
-            r.set(i+l, r.get(i+l)+carry);
-            */
-            System.out.println(r);
+            r.set(i+l, r.get(i+l)+carry); //LINE 10 ALGO
+            
+            /* This code was an attempt to use existing arithmetic functions for r = r-qi*b. Not sure if functional.
+            //System.out.println(r);
             LinkedList<Integer> qiList = new LinkedList<>(Arrays.asList(q.get(0)));
             LinkedList<Integer> qiListTimesY = Karatsuba.karatsuba(qiList, y, b, null, 1);
-            System.out.println(Karatsuba.karatsuba(qiList, y, b, null, 1));
+            System.out.println(Karatsuba.karatsuba(qiList, y, b, null, 1) + " " + y);
+            Arithmetic.removeLeadingZeros(y);
             r = Subtraction.subtract(r, qiListTimesY, b, null);
-            System.out.println(qiList + " " + qiListTimesY + " " + y + " " + r);
-            while (r.get(i+l) < 0) {
-                System.out.println("in while loop, current r(i+1): " + r.get(i+1));
-                carry = 0;
-                for (int j = 0; j < l; j++) {
-                    System.out.println("in second nested loop " + j);
-                    tmp = r.get(i+j) - y.get(i) + carry;
-                    carry = tmp/b;
-                    r.set(i+j, tmp%b);
+            //System.out.println(qiList + " " + qiListTimesY + " " + y + " " + r);
+            //Fix the missing leading zeros (removed by arithmetic functions)
+            while (r.size() < x.size()+1) {
+                r.addFirst(0);
+            }
+            */
+            
+            while (r.get(i+l) < 0) { //LINE 11 ALGO
+                carry = 0; //LINE 12 ALGO
+                for (int j = 0; j < l; j++) { //LINE 13 ALGO
+                    tmp = r.get(i+j) + y.get(i) + carry; //LINE 14 ALGO
+                    carry = tmp/b; //LINE 15 ALGO
+                    r.set(i+j, tmp%b); //STILL LINE 15 ALGO
                 }
-                r.set(i+l, r.get(i+l)+carry);
-                q.set(0, q.get(0)-1);
+                r.set(i+l, r.get(i+l)+carry); //LINE 16 ALGO
+                q.set(0, q.get(0)-1); //LINE 17 ALGO
             }
         }
         Arithmetic.removeLeadingZeros(r); Arithmetic.removeLeadingZeros(q);
-        return new Arithmetic.QuoRem(q,r);
+        return new Arithmetic.QuoRem(q,r); //LINE 18 ALGO
     }
     
 }
