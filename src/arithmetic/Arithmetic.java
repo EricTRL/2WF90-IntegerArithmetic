@@ -178,6 +178,11 @@ public class Arithmetic {
         public QuoRem(LinkedList<Integer> q, LinkedList<Integer> r) {
             this.q = q; this.r = r;
         }
+        
+        @Override
+        public String toString() {
+            return "(" + q + "," + r + ")";
+        }
     }
     
     

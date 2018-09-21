@@ -40,11 +40,11 @@ public class Karatsuba {
     public static LinkedList<Integer> karatsuba(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation, int minBits) {
         //ensure that x and y can be split up in two even parts (by adding
         //leading 0s)
-        if (x.size() % 2 != 0) {
+        if ((x.size() & 1) != 0) {
             x.addFirst(0);
         }//x.size() = even
         
-        if (y.size() % 2 != 0) {
+        if ((y.size() & 1) != 0) {
             y.addFirst(0);
         }//y.size() = even
 
