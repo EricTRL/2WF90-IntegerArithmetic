@@ -11,6 +11,9 @@ public class Division {
         LinkedList<Integer> x = new LinkedList<>(Computation.stringToList("856486231"));
         LinkedList<Integer> y = new LinkedList<>(Computation.stringToList("65454"));
         System.out.println(dumbDivide(x,y,10,null).q + " " + dumbDivide(x,y,10,null).r);
+        System.out.println("did one");
+        System.out.println(verryVerrrySmartDivide(x,y,10,null).q + " " + verryVerrrySmartDivide(x,y,10,null).r);
+        System.out.println("did two");
     }
 
     /**
@@ -143,7 +146,10 @@ public class Division {
         //return null;
     }
     
-    public static Arithmetic.QuoRem verryVerrrySmartDivide(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
+    public static Arithmetic.QuoRem verryVerrrySmartDivide(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation c) {
+        Arithmetic.removeLeadingZeros(x); Arithmetic.removeLeadingZeros(y);
+        System.out.println(x + " " + x.size());
+        System.out.println(y + " " + y.size());
         int k = x.size();
         int l = y.size();
         
@@ -159,13 +165,52 @@ public class Division {
         LinkedList<Integer> q = new LinkedList<>();
         LinkedList<Integer> r = new LinkedList<>(x);
         r.addFirst(0);
-        
+        int carry;
+        int tmp;
+        System.out.println("lets start outer loop, k.size = " + k + ", and l.size = " + l);
         for(int i = k-l; i >= 0; i--) {
+            //System.out.println("in outer loop " + i);
+            //System.out.println("r.get(i+l): " + r.get(i+l) + ", b: " + b + ", r.get(i+l-1): " + r.get(i+l-1) + ", y.get(l-1): " + y.get(l-1));
+            int numberToAddInQ = (r.get(i+l)*b+r.get(i+l-1))/y.get(l-1);
+            System.out.println("NumberToAddInQ: " + numberToAddInQ);
+            if (numberToAddInQ >= b) {
+                numberToAddInQ = b-1;
+            }
+            q.addFirst(numberToAddInQ);
+            /*
+            carry = 0;
+            System.out.println(q + " " + numberToAddInQ);
+            for (int j = 0; j < l; j++) {
+                //System.out.println("r.get(i+j): " + r.get(i+j) + ", q.get(0): " + q.get(0) + ", y.get(j): " + y.get(j) + ", carry: " + carry);
+                tmp = r.get(i+j) - q.get(0)*y.get(j) + carry;
+                carry = tmp/b;
+                //System.out.println("end of first nested loop " + j + ", carry = " + carry + " and tmp = " + tmp);
+                r.set(i+j, tmp%b);
+            }
             
+            r.set(i+l, r.get(i+l)+carry);
+            */
+            System.out.println(r);
+            LinkedList<Integer> qiList = new LinkedList<>(Arrays.asList(q.get(0)));
+            LinkedList<Integer> qiListTimesY = Karatsuba.karatsuba(qiList, y, b, null, 1);
+            System.out.println(Karatsuba.karatsuba(qiList, y, b, null, 1));
+            r = Subtraction.subtract(r, qiListTimesY, b, null);
+            System.out.println(qiList + " " + qiListTimesY + " " + y + " " + r);
+            while (r.get(i+l) < 0) {
+                System.out.println("in while loop, current r(i+1): " + r.get(i+1));
+                carry = 0;
+                for (int j = 0; j < l; j++) {
+                    System.out.println("in second nested loop " + j);
+                    tmp = r.get(i+j) - y.get(i) + carry;
+                    carry = tmp/b;
+                    r.set(i+j, tmp%b);
+                }
+                r.set(i+l, r.get(i+l)+carry);
+                q.set(0, q.get(0)-1);
+            }
         }
-        
-        
-        return null;
+        Arithmetic.removeLeadingZeros(r); Arithmetic.removeLeadingZeros(q);
+        return new Arithmetic.QuoRem(q,r);
     }
     
 }

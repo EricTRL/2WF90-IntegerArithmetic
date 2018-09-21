@@ -16,8 +16,8 @@ import java.util.LinkedList;
  */
 public class Addition {
     public static void main(String[] args) {        
-        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("10"));
-        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("-100"));
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("9665"));
+        LinkedList<Integer> b = new LinkedList<>(Computation.stringToList("4444"));
         System.out.println(add(a, b, 10, null));
     }
     
@@ -48,7 +48,7 @@ public class Addition {
         }
         /* Here both x and y are positive */
         LinkedList<Integer> answer = new LinkedList<>();
-        Iterator<Integer> it_x = x.iterator(); Iterator<Integer> it_y = y.iterator();
+        Iterator<Integer> it_x = x.descendingIterator(); Iterator<Integer> it_y = y.descendingIterator();
         int carry = 0;
         while (it_x.hasNext() && it_y.hasNext()) {
             int a = it_x.next(); int c = it_y.next();
