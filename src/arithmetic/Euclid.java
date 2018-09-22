@@ -17,7 +17,7 @@ import static arithmetic.Multiplication.multiply;
  * @since 6 SEPTEMBER 2018
  */
 
-//GreaterOrEqual doesnt work
+
 public class Euclid {
     
     public static void main(String[] args) {
@@ -32,8 +32,8 @@ public class Euclid {
     
     public static LinkedList<Integer> euclid(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation c) {
         //Duplicate x and y
-        LinkedList<Integer> inputX = (LinkedList) x.clone();
-        LinkedList<Integer> inputY = (LinkedList) y.clone();
+        LinkedList<Integer> inputX = new LinkedList<>(x);
+        LinkedList<Integer> inputY = new LinkedList<>(y);
         
         //Declare variables
         LinkedList<Integer> a1 = new LinkedList<>(Arrays.asList(1));
@@ -50,9 +50,9 @@ public class Euclid {
         
         //Make sure x > y
         if(Arithmetic.isLessThan(x,y)){
-            LinkedList<Integer> dummy = (LinkedList) x.clone();
-            x = (LinkedList) y.clone();
-            y = (LinkedList) dummy.clone();
+            LinkedList<Integer> dummy = new LinkedList<>(x);
+            x = new LinkedList<>(y);
+            y = new LinkedList<>(dummy);
             switched = true;
         }
         
