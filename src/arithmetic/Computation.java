@@ -58,7 +58,7 @@ public class Computation {
         }
         
         //safety check
-        if (!type.equals("[INVALID]") && (radix > 16 || radix < 1)) {
+        if (radix > 16 || radix < 1) {
             System.err.println("ERROR: Invalid Radix! (" + radix + ")");
         }
     }
