@@ -125,10 +125,10 @@ public class OutputWriter {
         if (OUTPUT_FOR_CALCULATION.get("answer").contains(type)) {
             fileWriter.write("[answer] " + computation.getAnswerAsString()); fileWriter.newLine();
         }        
-        if (OUTPUT_FOR_CALCULATION.get("count-add").contains(type)) {
+        if (OUTPUT_FOR_CALCULATION.get("count-add").contains(type) && !computation.hasModulus()) {
             fileWriter.write("[count-add] " + computation.getCountAdd()); fileWriter.newLine();
         }
-        if (OUTPUT_FOR_CALCULATION.get("count-mul").contains(type)) {
+        if (OUTPUT_FOR_CALCULATION.get("count-mul").contains(type) && !computation.hasModulus()) {
             fileWriter.write("[count-mul] " + computation.getCountMultiply()); fileWriter.newLine();
         }
         if (OUTPUT_FOR_CALCULATION.get("answ-d").contains(type)) {
