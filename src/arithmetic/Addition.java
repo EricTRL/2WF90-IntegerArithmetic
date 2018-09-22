@@ -42,9 +42,9 @@ public class Addition {
     public static LinkedList<Integer> add(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation computation) {        
         Arithmetic.makeLengthsEqual(x, y);
         if (Arithmetic.isNegative(x)) {
-            return Subtraction.subtract(y, Arithmetic.abs(x), b, null);
+            return Subtraction.subtract(y, Arithmetic.abs(x), b, computation);
         } else if (Arithmetic.isNegative(y)) {
-            return Subtraction.subtract(x, Arithmetic.abs(y), b, null);
+            return Subtraction.subtract(x, Arithmetic.abs(y), b, computation);
         }
         /* Here both x and y are positive */
         LinkedList<Integer> answer = new LinkedList<>();
