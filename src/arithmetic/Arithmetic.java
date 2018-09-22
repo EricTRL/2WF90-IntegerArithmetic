@@ -31,26 +31,17 @@ public class Arithmetic {
         Computation c;
         while ((c = reader.getNextComputation()) != null) {
             switch (c.getType()) {
-                case "[add]":   if (c.getM().size() > 0) {
-                    c.setAnswer(Modulo.addModulo(c));
-                } else {
-                    c.setAnswer(Addition.add(c));
-                } break;
-                case "[subtract]": if (c.getM().size() > 0) {
-                    c.setAnswer(Modulo.subtractModulo(c));
-                } else {
-                    c.setAnswer(Subtraction.subtract(c));
-                } break;
-                case "[multiply]": if (c.getM().size() > 0) {
-                    c.setAnswer(Modulo.multiplyModulo(c));
-                } else {
-                    c.setAnswer(Multiplication.multiply(c));
-                } break;
+                case "[add]":       c.setAnswer(c.hasModulus() ? Modulo.addModulo(c) : Addition.add(c));
+                                    break;
+                case "[subtract]":  c.setAnswer(c.hasModulus() ? Modulo.subtractModulo(c) : Subtraction.subtract(c));
+                                    break;
+                case "[multiply]":  c.setAnswer(c.hasModulus() ? Modulo.multiplyModulo(c) : Multiplication.multiply(c));
+                                    break;
                 case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
-                case "[reduce]": c.setAnswer(Modulo.modulo(c)); break;
-                case "[inverse]": /*c.setAnswer(Modulo.modularInversion(c));*/ break;
-                case "[euclid]": c.setAnswer(Euclid.euclid(c)); break;
-                default: System.err.println("Unexpected type found: " + c.getType()); break;
+                case "[reduce]":    c.setAnswer(Modulo.modulo(c)); break;
+                case "[inverse]":   c.setAnswer(Modulo.modularInversion(c)); break;
+                case "[euclid]":    c.setAnswer(Euclid.euclid(c)); break;
+                default:            System.err.println("Unexpected type found: " + c.getType()); break;
             }
             System.out.println(c.getAnswer()); System.out.println(c.getAnswerAsString());
             computations.add(c);

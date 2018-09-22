@@ -130,13 +130,5 @@ public class Euclid {
             System.out.print(list.get(i));
         }
         System.out.println("");
-    }
-    
-    private static void sleep(int time) {
-        try{
-            Thread.sleep(time);
-        } catch(Exception e){
-        }
-    }
-    
+    }    
 }

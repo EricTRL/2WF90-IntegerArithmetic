@@ -112,6 +112,10 @@ public class Computation {
         return m;
     }
     
+    public boolean hasModulus() {
+        return !m.isEmpty();
+    }
+    
     public LinkedList<Integer> getAnswer() {
         return answer;
     }

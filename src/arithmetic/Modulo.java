@@ -21,8 +21,8 @@ public class Modulo {
     }
     
     public static LinkedList<Integer> modulo(Computation c) {
-        System.out.println("x for modulo calc: " + c.getX());
-        System.out.println("modulo: " + c.getM());
+        //System.out.println("x for modulo calc: " + c.getX());
+        //System.out.println("modulo: " + c.getM());
         return modulo(c.getX(), c.getM(), c.getRadix());
     }
 
@@ -34,7 +34,7 @@ public class Modulo {
      * @return x (mod m)
      */
     public static LinkedList<Integer> modulo (LinkedList<Integer> x, LinkedList<Integer> m, int b) {
-        return Division.divide(x, m, b, null).r;
+        return Division.divide(x, m, b).r;
     }
 
     public static LinkedList<Integer> addModulo(Computation c) {
@@ -85,7 +85,7 @@ public class Modulo {
      * @param b base
      * @return (x*y)(mod m)
      */
-    public static LinkedList<Integer> multiplyModulo (LinkedList<Integer> x, LinkedList<Integer> y, LinkedList<Integer> m, int b) {
+    public static LinkedList<Integer> multiplyModulo(LinkedList<Integer> x, LinkedList<Integer> y, LinkedList<Integer> m, int b) {
         x = modulo(x, m, b); y = modulo(y, m, b); //Reduce x and y
         LinkedList<Integer> z = Karatsuba.karatsuba(x, y, b, null, 1);
         return modulo(z, m, b);
@@ -107,7 +107,7 @@ public class Modulo {
         LinkedList<Integer> x_prime = x; LinkedList<Integer> m_prime = m;
         int x_1 = 1; int x_2 = 0;
         while (Arithmetic.isPositive(m_prime)) {
-            LinkedList<Integer> q = Division.divide(x_prime, m_prime, b, null).q;
+            LinkedList<Integer> q = Division.divide(x_prime, m_prime, b).q;
             LinkedList<Integer> r = Subtraction.subtract(x_prime, Karatsuba.karatsuba(q, m_prime, b, null, 1), b, null);
             x_prime = m_prime; m_prime = r;
         }

@@ -38,8 +38,8 @@ public class Division {
         ///*
         LinkedList<Integer> x = new LinkedList<>(Computation.stringToList(Integer.toString(1380)));
         LinkedList<Integer> y = new LinkedList<>(Computation.stringToList(Integer.toString(470)));
-        //System.out.println("dumbDivide: " + dumbDivide(x, y, 10, null));
-        System.out.println(divide(x, y, 10, null));
+        //System.out.println("dumbDivide: " + dumbDivide(x, y, 10));
+        System.out.println(divide(x, y, 10));
         //*/
     }
 
@@ -48,10 +48,9 @@ public class Division {
      * @param x numerator in base B
      * @param y denominator in base B
      * @param B base
-     * @param c Computation
      * @return (q,r) with q=x/y and r=x%y
      */
-    public static Arithmetic.QuoRem dumbDivide(LinkedList<Integer> x, LinkedList<Integer> y, int B, Computation c) {
+    public static Arithmetic.QuoRem dumbDivide(LinkedList<Integer> x, LinkedList<Integer> y, int B) {
         LinkedList<Integer> q = new LinkedList<>(); q.add(0);
         LinkedList<Integer> one = new LinkedList<>(); one.add(1);
         LinkedList<Integer> r = new LinkedList<>(x);
@@ -68,11 +67,10 @@ public class Division {
      * @param x numerator in base B
      * @param y denominator in base B
      * @param b base
-     * @param c Computation
      * @pre x >= 0 && y != 0
      * @return (q,r) with q=x/y and r=x%y
      */
-    public static Arithmetic.QuoRem divide(LinkedList<Integer> x, LinkedList<Integer> y, int b, Computation c) {
+    public static Arithmetic.QuoRem divide(LinkedList<Integer> x, LinkedList<Integer> y, int b) {
         //the first 'bit' of y cannot be 0. It doesn't matter for x, but it reduces the amount of computations we have to do, so we do it anyways.
         Arithmetic.removeLeadingZeros(x); Arithmetic.removeLeadingZeros(y);
         int k = x.size();
