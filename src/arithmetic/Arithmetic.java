@@ -45,10 +45,11 @@ public class Arithmetic {
                                     break;
                 case "[reduce]":    c.setAnswer(Modulo.modulo(c));
                                     break;
-                case "[inverse]":   LinkedList<Integer> inversionAnswer = Modulo.modularInversion(c);
-                                    System.out.println(inversionAnswer);
-                                    if (inversionAnswer.size() == 1 && inversionAnswer.get(0) == 1) {
-                                        c.setAnswer(inversionAnswer);
+                case "[inverse]":   LinkedList<Integer> inverseAnswer = Modulo.modularInversion(c);
+                                    if (inverseAnswer == null) {
+                                        c.setError(true);
+                                    } else {
+                                        c.setAnswer(inverseAnswer);
                                     }
                                     break;
                 case "[euclid]":    c.setAnswer(Euclid.euclid(c));
@@ -70,7 +71,7 @@ public class Arithmetic {
      */
     public static void makeNegative(LinkedList<Integer> x) {
         for (int i = 0; i < x.size(); i++) {
-            x.set(i, Math.abs(-x.get(i)));
+            x.set(i, -Math.abs(x.get(i)));
         }
     }
     

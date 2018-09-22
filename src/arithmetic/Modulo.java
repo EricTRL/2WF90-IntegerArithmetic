@@ -105,19 +105,27 @@ public class Modulo {
      * @return x^{-1}
      */
     public static LinkedList<Integer> modularInversion(LinkedList<Integer> x, LinkedList<Integer> m, int b) {
-        LinkedList<Integer> x_prime = x; LinkedList<Integer> m_prime = m;
+        LinkedList<Integer> x_prime = Modulo.modulo(x, m, b); LinkedList<Integer> m_prime = m;
         LinkedList<Integer> x_1 = new LinkedList<>(Arrays.asList(1));
         LinkedList<Integer> x_2 = new LinkedList<>(Arrays.asList(0));
-        LinkedList<Integer> x_3 = new LinkedList<>();
+        LinkedList<Integer> x_3;
+        
         while (Arithmetic.isPositive(m_prime)) {
-            LinkedList<Integer> q = Division.divide(x_prime, m_prime, b).q;
-            LinkedList<Integer> r = Subtraction.subtract(x_prime, Karatsuba.karatsuba(q, m_prime, b, null, 1), b, null);
+            Arithmetic.QuoRem quoRem = Division.divide(x_prime, m_prime, b);
+            LinkedList<Integer> q = quoRem.q;
+            LinkedList<Integer> r = quoRem.r;
             x_prime = m_prime; m_prime = r;
-            x_3 = Subtraction.subtract(x_1, Karatsuba.karatsuba(q, x_2, b, null, 1), b, null);
+            x_3 = Modulo.subtractModulo(x_1, Modulo.multiplyModulo(q, x_2, m, b), m, b);
             x_1 = x_2;
             x_2 = x_3;
         }
+        
         Arithmetic.removeLeadingZeros(x_prime);
-        return x_prime;
+        if (Arithmetic.isEqual(x_prime, new LinkedList<>(Arrays.asList(1)))) {
+            Arithmetic.removeLeadingZeros(x_1);
+            return x_1;
+        }
+        //output does not exist
+        return null;
     }
 }
