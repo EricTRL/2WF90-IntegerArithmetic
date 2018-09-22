@@ -15,12 +15,14 @@ import java.util.LinkedList;
  */
 public class Modulo {
     public static void main(String[] args) {
-        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("138"));
-        LinkedList<Integer> m = new LinkedList<>(Computation.stringToList("47"));
+        LinkedList<Integer> a = new LinkedList<>(Computation.stringToList("1389078698756746874587645876"));
+        LinkedList<Integer> m = new LinkedList<>(Computation.stringToList("4746556"));
         System.out.println(modulo(a, m, 10));
     }
     
     public static LinkedList<Integer> modulo(Computation c) {
+        System.out.println("x for modulo calc: " + c.getX());
+        System.out.println("modulo: " + c.getM());
         return modulo(c.getX(), c.getM(), c.getRadix());
     }
 
@@ -35,6 +37,9 @@ public class Modulo {
         return Division.divide(x, m, b, null).r;
     }
 
+    public static LinkedList<Integer> addModulo(Computation c) {
+        return addModulo(c.getX(), c.getY(), c.getRadix(), c.getM());
+    }
     /**
      * Modular addition of numbers x,y
      * @param x number x
@@ -53,6 +58,9 @@ public class Modulo {
         }
     }
 
+    public static LinkedList<Integer> subtractModulo(Computation c) {
+        return subtractModulo(c.getX(), c.getY(), c.getM(), c.getRadix());
+    }
     /**
      * Modular subtraction of x - y
      * @param x number x
@@ -62,15 +70,13 @@ public class Modulo {
      * @return x-y (mod m)
      */
     public static LinkedList<Integer> subtractModulo (LinkedList<Integer> x, LinkedList<Integer> y, LinkedList<Integer>m, int b) {
-        x = modulo(x, m, b); y = modulo(y, m ,b); //Reduce x and y
         LinkedList<Integer> z = Subtraction.subtract(x, y, b, null);
-        if (Arithmetic.isPositive(z)) {
-            return z;
-        } else {
-            return Addition.add(x, m, b, null);
-        }
+        return modulo(z, m, b);
     }
 
+    public static LinkedList<Integer> multiplyModulo(Computation c) {
+        return multiplyModulo(c.getX(), c.getY(), c.getM(), c.getRadix());
+    }
     /**
      * Naive Modular multiplication
      * @param x number x

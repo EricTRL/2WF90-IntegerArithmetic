@@ -97,7 +97,6 @@ public class Division {
                 
                 //for (int j = l-1; j >= 0; j--)
                 while (yIt.hasNext()) { //LINE 13 ALGO
-                    System.out.println("hi youtube");
                     int jthElem = yIt.next(); //jthElem = y.get(j)
                     int tmp = r.get(i+j+1) + jthElem + carry; //LINE 14 ALGO
                     carry = Math.floorDiv(tmp,b); //LINE 15 ALGO
