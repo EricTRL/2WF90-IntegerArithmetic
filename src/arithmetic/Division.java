@@ -4,13 +4,43 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Random;
 
 public class Division {
-    public static void main(String[] args) {
-        LinkedList<Integer> x = new LinkedList<>(Computation.stringToList("7777"));
-        LinkedList<Integer> y = new LinkedList<>(Computation.stringToList("111"));
-        System.out.println("divide: " + divide(x, y, 10, null));
-        System.out.println("dumbDivide: " + dumbDivide(x, y, 10, null));
+    public static void main(String[] args) throws Exception {
+        /*
+        Random r = new Random();
+        int count = 0;
+        while(true) {
+            int intX = r.nextInt(9999) + 1001;
+            int intY = r.nextInt(999) + 1;
+            if (intY > intX) {
+                int temp = intX;
+                intX = intY;
+                intY = temp;
+            }
+            
+            LinkedList<Integer> x = new LinkedList<>(Computation.stringToList(Integer.toString(intX)));
+            LinkedList<Integer> y = new LinkedList<>(Computation.stringToList(Integer.toString(intY)));
+            Arithmetic.QuoRem smartDiv = divide(x,y,10,null);
+            
+            if (!Arithmetic.isEqual(Addition.add(Karatsuba.karatsuba(y, smartDiv.q, 10, null, 1), smartDiv.r, 10, null), x)) {
+                System.err.println("Ran " + count + " tests until exception...");
+                throw new Exception("got " + smartDiv + " for x = " + x + ", y = " + y);
+            }
+            
+            if (count%1000 == 0) {
+                System.out.println("ran " + count + " tests so far");
+            }
+            count++;
+        }     
+        */
+        ///*
+        LinkedList<Integer> x = new LinkedList<>(Computation.stringToList(Integer.toString(1380)));
+        LinkedList<Integer> y = new LinkedList<>(Computation.stringToList(Integer.toString(470)));
+        //System.out.println("dumbDivide: " + dumbDivide(x, y, 10, null));
+        System.out.println(divide(x, y, 10, null));
+        //*/
     }
 
     /**
@@ -97,7 +127,6 @@ public class Division {
                 
                 //for (int j = l-1; j >= 0; j--)
                 while (yIt.hasNext()) { //LINE 13 ALGO
-                    System.out.println("hi youtube");
                     int jthElem = yIt.next(); //jthElem = y.get(j)
                     int tmp = r.get(i+j+1) + jthElem + carry; //LINE 14 ALGO
                     carry = Math.floorDiv(tmp,b); //LINE 15 ALGO

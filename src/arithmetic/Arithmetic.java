@@ -105,14 +105,6 @@ public class Arithmetic {
         return false; //x==y, thus we output false
     }
     
-    public static LinkedList<Integer> abs(LinkedList<Integer> x) {
-        LinkedList<Integer> absX = new LinkedList<Integer>();
-        for (int i_x : x) {
-            absX.addLast(Math.abs(i_x));
-        }
-        return absX;
-    }
-    
     /**
      * Method that compares x and y and outputs true if x > y
      * @param x
@@ -131,6 +123,26 @@ public class Arithmetic {
             }
         }
         return false; //x==y, thus we output false
+    }
+    
+    public static boolean isEqual(LinkedList<Integer> x, LinkedList<Integer> y) {
+        Arithmetic.makeLengthsEqual(x, y);
+        Iterator<Integer> xIt = x.iterator(); Iterator<Integer> yIt = y.iterator();
+        while (xIt.hasNext() && yIt.hasNext()) {
+            int x_i = xIt.next(); int y_i = yIt.next();
+            if (x_i != y_i) {
+                return false; //x!=y
+            }
+        }
+        return true; //x==y, thus we output true
+    }
+        
+    public static LinkedList<Integer> abs(LinkedList<Integer> x) {
+        LinkedList<Integer> absX = new LinkedList<Integer>();
+        for (int i_x : x) {
+            absX.addLast(Math.abs(i_x));
+        }
+        return absX;
     }
     
     /**
