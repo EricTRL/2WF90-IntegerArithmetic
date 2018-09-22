@@ -1,6 +1,7 @@
 package arithmetic;
 
 import java.util.LinkedList;
+import java.util.Arrays;
 
 /**
  * This is the class handling modulo arithmetic
@@ -105,12 +106,18 @@ public class Modulo {
      */
     public static LinkedList<Integer> modularInversion(LinkedList<Integer> x, LinkedList<Integer> m, int b) {
         LinkedList<Integer> x_prime = x; LinkedList<Integer> m_prime = m;
-        int x_1 = 1; int x_2 = 0;
+        LinkedList<Integer> x_1 = new LinkedList<>(Arrays.asList(1));
+        LinkedList<Integer> x_2 = new LinkedList<>(Arrays.asList(0));
+        LinkedList<Integer> x_3 = new LinkedList<>();
         while (Arithmetic.isPositive(m_prime)) {
             LinkedList<Integer> q = Division.divide(x_prime, m_prime, b, null).q;
             LinkedList<Integer> r = Subtraction.subtract(x_prime, Karatsuba.karatsuba(q, m_prime, b, null, 1), b, null);
             x_prime = m_prime; m_prime = r;
+            x_3 = Subtraction.subtract(x_1, Karatsuba.karatsuba(q, x_2, b, null, 1), b, null);
+            x_1 = x_2;
+            x_2 = x_3;
         }
+        Arithmetic.removeLeadingZeros(x_prime);
         return x_prime;
     }
 }
