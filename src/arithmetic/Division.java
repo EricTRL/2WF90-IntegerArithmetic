@@ -7,9 +7,10 @@ import java.util.Iterator;
 
 public class Division {
     public static void main(String[] args) {
-        LinkedList<Integer> x = new LinkedList<>(Computation.stringToList("4805"));
-        LinkedList<Integer> y = new LinkedList<>(Computation.stringToList("307"));
-        System.out.println(divide(x, y, 10, null));
+        LinkedList<Integer> x = new LinkedList<>(Computation.stringToList("7777"));
+        LinkedList<Integer> y = new LinkedList<>(Computation.stringToList("111"));
+        System.out.println("divide: " + divide(x, y, 10, null));
+        System.out.println("dumbDivide: " + dumbDivide(x, y, 10, null));
     }
 
     /**
@@ -96,10 +97,12 @@ public class Division {
                 
                 //for (int j = l-1; j >= 0; j--)
                 while (yIt.hasNext()) { //LINE 13 ALGO
+                    System.out.println("hi youtube");
                     int jthElem = yIt.next(); //jthElem = y.get(j)
                     int tmp = r.get(i+j+1) + jthElem + carry; //LINE 14 ALGO
                     carry = Math.floorDiv(tmp,b); //LINE 15 ALGO
                     r.set(i+j+1, Math.floorMod(tmp, b)); //STILL LINE 15 ALGO
+                    j--;
                 }
                 r.set(i, r.get(i) + carry); //LINE 16 ALGO
                 q.addLast(q.removeLast() - 1);

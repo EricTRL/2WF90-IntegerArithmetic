@@ -52,6 +52,7 @@ public class Addition {
         int carry = 0;
         while (it_x.hasNext() && it_y.hasNext()) {
             int a = it_x.next(); int c = it_y.next();
+            if (computation != null) computation.changeCountAdd(1);
             answer.addFirst((a+c+carry)%b);
             if (a+c+carry>=b) carry = 1;
             else carry = 0;
