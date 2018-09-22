@@ -118,6 +118,10 @@ public class Modulo {
             x_2 = x_3;
         }
         Arithmetic.removeLeadingZeros(x_prime);
-        return x_prime;
+        if (x_prime.size() == 1 && x_prime.get(0) == 1) {
+            x_1 = modulo(x_1, m, b);
+            return x_1;
+        }
+        return new LinkedList<>();
     }
 }

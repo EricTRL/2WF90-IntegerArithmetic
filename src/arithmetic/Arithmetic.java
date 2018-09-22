@@ -39,10 +39,7 @@ public class Arithmetic {
                                     break;
                 case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
                 case "[reduce]":    c.setAnswer(Modulo.modulo(c)); break;
-                case "[inverse]":   LinkedList<Integer> inversionAnswer = Modulo.modularInversion(c);
-                                    if (inversionAnswer.size() == 1 && inversionAnswer.get(0) == 1) {
-                                        c.setAnswer(inversionAnswer);
-                                    } break;
+                case "[inverse]":   c.setAnswer(Modulo.modularInversion(c)); break;
                 case "[euclid]":    c.setAnswer(Euclid.euclid(c)); break;
                 default:            System.err.println("Unexpected type found: " + c.getType()); break;
 
