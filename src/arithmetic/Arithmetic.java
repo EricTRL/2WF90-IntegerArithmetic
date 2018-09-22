@@ -24,12 +24,16 @@ public class Arithmetic {
     
     public static void main(String args[]) throws FileNotFoundException {
         //expects res/Input.txt to exist
+        //a FileInputStream can also be passed as a parameter instead
         InputReader reader = new InputReader();
         
+        //List of computations to make
         List<Computation> computations = new LinkedList<>();
         
+        //while there are computations to read
         Computation c;
         while ((c = reader.getNextComputation()) != null) {
+            //the computation's type (and modulus) signify what to compute
             switch (c.getType()) {
                 case "[add]":       c.setAnswer(c.hasModulus() ? Modulo.addModulo(c) : Addition.add(c));
                                     break;
@@ -37,32 +41,57 @@ public class Arithmetic {
                                     break;
                 case "[multiply]":  c.setAnswer(c.hasModulus() ? Modulo.multiplyModulo(c) : Multiplication.multiply(c));
                                     break;
-                case "[karatsuba]": c.setAnswer(Karatsuba.karatsuba(c)); break;
-                case "[reduce]":    c.setAnswer(Modulo.modulo(c)); break;
-                case "[inverse]":   c.setAnswer(Modulo.modularInversion(c)); break;
-                case "[euclid]":    c.setAnswer(Euclid.euclid(c)); break;
-                default:            System.err.println("Unexpected type found: " + c.getType()); break;
-
+                case "[karatsuba]": c.setAnswer(c.hasModulus() ? Modulo.multiplyModulo(c) : Karatsuba.karatsuba(c));
+                                    break;
+                case "[reduce]":    c.setAnswer(Modulo.modulo(c));
+                                    break;
+                case "[inverse]":   c.setAnswer(Modulo.modularInversion(c));
+                                    break;
+                case "[euclid]":    c.setAnswer(Euclid.euclid(c));
+                                    break;
+                default:            System.err.println("Invalid Computation-Type found: " + c.getType()); break;
             }
-            System.out.println(c.getAnswer()); System.out.println(c.getAnswerAsString());
+            //System.out.println(c.getAnswer()); System.out.println(c.getAnswerAsString());
             computations.add(c);
         }
-        //OutputWriter.writeOutput(computations);
         OutputWriter.writeOutput(computations); //writes to res/output.txt by default
     }
 
-    public static void negative(LinkedList<Integer> answer) {
-        for (int i = 0; i < answer.size(); i++) {
-            answer.set(i, Math.abs(answer.get(i))*-1);
+    /**
+     * Makes a given number negative
+     * @param x Number to make negative
+     * @pre x != null
+     * @modifies x
+     * @post (\forall x_i; 0 <= x_i < x.size(); x[x_i] <= 0)
+     */
+    public static void makeNegative(LinkedList<Integer> x) {
+        for (int i = 0; i < x.size(); i++) {
+            x.set(i, Math.abs(-x.get(i)));
         }
     }
     
+    /**
+     * Inverts the given number. I.e. positive numbers become negative, and vice
+     * versa
+     * @param x 
+     * @pre x != null
+     * @modifies x
+     * @post (\forall x_i; 0 <= x_i < x.size(); -x[x_i] == \old(x[x_i]))
+     */
     public static void invert(LinkedList<Integer> x) {
         for (int i = 0; i < x.size(); i++) {
             x.set(i, x.get(i)*-1);
         }
     }
     
+    /**
+     * Adds leading zeros to one number to make its length equal to that of another
+     * @param x A number
+     * @param y Another number
+     * @pre x != null && y != null
+     * @modifies x, y
+     * @post x.size() == y.size();
+     */
     public static void makeLengthsEqual(LinkedList<Integer> x, LinkedList<Integer> y) {
         if (x.size()<y.size()) {
             int sizeDiff = y.size()-x.size();
@@ -80,6 +109,7 @@ public class Arithmetic {
     /**
      * Removes all leading zeros from a given number
      * @param x The number to remove the leading zeros from (if any)
+     * @pre x != null
      * @modifies x
      * @post x.peekFirst() != 0 || x.size() == 1
      */
@@ -91,8 +121,9 @@ public class Arithmetic {
     
     /**
      * Method that compares x and y and outputs true if x < y
-     * @param x
-     * @param y
+     * @param x A Number
+     * @param y Another Number
+     * @pre x != null && y != null
      * @return x < y
      */
     public static boolean isLessThan(LinkedList<Integer> x, LinkedList<Integer> y) {
@@ -111,8 +142,9 @@ public class Arithmetic {
     
     /**
      * Method that compares x and y and outputs true if x > y
-     * @param x
-     * @param y
+     * @param x A Number
+     * @param y Another Number
+     * @pre x != null && y != null
      * @return x > y
      */
     public static boolean isMoreThan(LinkedList<Integer> x, LinkedList<Integer> y) {
@@ -129,6 +161,13 @@ public class Arithmetic {
         return false; //x==y, thus we output false
     }
     
+    /**
+     * Method that compares x and y and outputs true if they are equal
+     * @param x A Number
+     * @param y Another Number
+     * @pre x != null && y != null
+     * @return x == y
+     */
     public static boolean isEqual(LinkedList<Integer> x, LinkedList<Integer> y) {
         Arithmetic.makeLengthsEqual(x, y);
         Iterator<Integer> xIt = x.iterator(); Iterator<Integer> yIt = y.iterator();
@@ -140,9 +179,16 @@ public class Arithmetic {
         }
         return true; //x==y, thus we output true
     }
-        
+    
+    /**
+     * Makes all words in a number positive
+     * @param x The number to make positive
+     * @pre x != null
+     * @post (\forall x_i; 0 <= x_i < x.size(); x[x_i] == abs(\old(x[x_i])))
+     * @return absX
+     */
     public static LinkedList<Integer> abs(LinkedList<Integer> x) {
-        LinkedList<Integer> absX = new LinkedList<Integer>();
+        LinkedList<Integer> absX = new LinkedList<>();
         for (int i_x : x) {
             absX.addLast(Math.abs(i_x));
         }
@@ -152,6 +198,7 @@ public class Arithmetic {
     /**
      * Method that checks if a given number x is negative
      * @param x Number to check
+     * @pre x != null
      * @return x < 0
      */
     public static boolean isNegative(LinkedList<Integer> x) {
@@ -166,6 +213,7 @@ public class Arithmetic {
     /**
      * Method that checks if a given number x is positive
      * @param x Number to check
+     * @pre x != null
      * @return x > 0
      */
     public static boolean isPositive(LinkedList<Integer> x) {
@@ -177,6 +225,14 @@ public class Arithmetic {
         return false; //x <= 0
     }
     
+    /**
+     * Shifts the words of a given number
+     * @param x
+     * @pre x != null
+     * @modifies x
+     * @post x.size() == \old(x.size()) + num
+     * @param num Number of places to shift (negative indicates a right shift)
+     */
     public static void shiftBits(LinkedList<Integer> x, int num) {
         //handle shifting to the left
         for (int i = 0; i < num; i++) {
@@ -188,6 +244,11 @@ public class Arithmetic {
         }
     }
 
+    /**
+     * Data Structure that stores a quotient and a remainder in one spot
+     * q: Quotient
+     * r: Remainder
+     */
     public static class QuoRem {
         public LinkedList<Integer> q;
         public LinkedList<Integer> r;

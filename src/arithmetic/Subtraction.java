@@ -36,7 +36,7 @@ public class Subtraction {
         Arithmetic.makeLengthsEqual(x, y);
         if (Arithmetic.isLessThan(x, y)) { // x < y
             LinkedList<Integer> answer = subtract(y, x, b, computation);
-            Arithmetic.negative(answer);
+            Arithmetic.makeNegative(answer);
             return answer;
         }
         //Assumption x > y
