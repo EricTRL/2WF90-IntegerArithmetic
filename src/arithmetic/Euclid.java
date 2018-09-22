@@ -5,6 +5,9 @@ import static arithmetic.Arithmetic.removeLeadingZeros;
 import static arithmetic.Subtraction.subtract;
 import static arithmetic.Addition.add;
 import static arithmetic.Multiplication.multiply;
+import static arithmetic.Subtraction.subtract;
+import static arithmetic.Addition.add;
+import static arithmetic.Multiplication.multiply;
 
 
 /**
@@ -84,7 +87,7 @@ public class Euclid {
         removeLeadingZeros(a1);
         removeLeadingZeros(b1);
         EuclidResult result = new EuclidResult(b, inputX, inputY, a1, b1, x);
-        result.print();
+        //result.print();
         
         // set answers in computation instance
         if (c != null) {
