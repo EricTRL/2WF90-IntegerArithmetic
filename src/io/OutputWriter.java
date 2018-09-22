@@ -32,11 +32,12 @@ public class OutputWriter {
     protected static final String DEFAULT_OUTPUT_FILE_NAME = "output.txt";
     protected static final File DEFAULT_OUTPUT_FILE = new File(DEFAULT_OUTPUT_FILE_PATH + "/" + DEFAULT_OUTPUT_FILE_NAME);
     
+    //fields that should be printed in the output, sorted by type of calculatio.
     private static final Map<String, List<String>> OUTPUT_FOR_CALCULATION;
     static {
         Map<String, List<String>> map = new HashMap<>();
-        //radix
-        //type
+        //radix: always printed
+        //type: always printed
         map.put("y", new ArrayList<>(Arrays.asList("[add]", "[subtract]", "[multiply]", "[karatsuba]", "[euclid]")));
         map.put("m", new ArrayList<>(Arrays.asList("[add]", "[subtract]", "[multiply]", "[karatsuba]", "[euclid]", "[reduce]", "[inverse]")));
         map.put("answer", new ArrayList<>(Arrays.asList("[add]", "[subtract]", "[multiply]", "[karatsuba]", "[reduce]", "[inverse]")));
@@ -49,7 +50,12 @@ public class OutputWriter {
         OUTPUT_FOR_CALCULATION = Collections.unmodifiableMap(map);
     }   
     
-    
+    /**
+     * Method which will print the output to the DEFAULT_OUTPUT_FILE
+     * (res/output.txt by default)
+     *
+     * @param computations A list of computations to print
+     */
     public static void writeOutput(List<Computation> computations) {
         DEFAULT_OUTPUT_FILE_PATH.mkdirs();
         try (FileOutputStream streamOut = new FileOutputStream(DEFAULT_OUTPUT_FILE);) {
@@ -63,19 +69,22 @@ public class OutputWriter {
     }
     
     /**
-     * Method which will print the output to systemOut
+     * Method which will print the output to a given OutputStream
      *
      * @param streamOut PrintStream of where to print (E.g. System.out)
      * @param computations A list of computations to print
      */
     public static void writeOutput(OutputStream streamOut, List<Computation> computations) {
+        //do nothing if there is nothing to print
         if (computations == null) {
             return;
         }
+        
         try (
                 BufferedWriter fileWriter =
                         new BufferedWriter(new OutputStreamWriter(streamOut, "UTF-8"));
         ) {
+            //print the output for each Computation
             for (Computation computation : computations) {
                 writeOutput(fileWriter, computation);
             }
@@ -87,7 +96,20 @@ public class OutputWriter {
         }
     }
     
+    /**
+     * Writes the output for a single computation
+     * @param fileWriter Writer that writes the output
+     * @param computation Computation to write the output for
+     * @throws IOException When the filewriter cannot write
+     */
     private static void writeOutput(BufferedWriter fileWriter, Computation computation) throws IOException {
+        //skip invalid computations
+        if (computation.getType().equals("[INVALID]")) {
+            fileWriter.write("[INVALID COMPUTATION]"); fileWriter.newLine();
+            fileWriter.newLine();
+            return;
+        }        
+        
         fileWriter.write("[radix] " + computation.getRadix()); fileWriter.newLine();
         
         String type = computation.getType();
